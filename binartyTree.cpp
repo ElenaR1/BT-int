@@ -327,7 +327,7 @@ private:
 		{
 			return NULL;
 		}
-		node* subTreeRoot = new node<T>(other.root->data, NULL, NULL);
+		node<T>* subTreeRoot = new node<T>(other.root->data, NULL, NULL);
 		this->subTreeRoot->left = copy(other->left);
 		this->subTreeRoot->right = copy(other->right);
 		delete subTreeRoot;
