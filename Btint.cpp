@@ -32,7 +32,7 @@ private:
 			root = createLeaf(addData);//it points to the newly created leaf(to the return value of the function). Natam nakudeto
 			//i  n sochi
 		}
-		else if (addData < root->data)
+		else if (addData < curPtr->data)
 		{
 			if (curPtr->left != NULL)//ako 1viq element nalqvo sochi kum neshto
 			{
@@ -43,7 +43,7 @@ private:
 				curPtr->left = createLeaf(addData);//we make the left pointer point to a newly created node
 			}
 		}
-		else if (addData > root->data)
+		else if (addData > curPtr->data)
 		{
 			if (curPtr->right != NULL)//ako 1viq element nalqvo sochi kum neshto
 			{
