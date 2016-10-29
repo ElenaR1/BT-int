@@ -350,20 +350,8 @@ private:
 			cout << "there is no node at that position" << endl;
 		}
 	}
-	node<T>* copy(node<T>* other)
-	{
-		if (other == NULL)
-		{
-			return NULL;
-		}
-		node<T>* subTreeRoot = new node<T>(other.root->data, NULL, NULL);
-		this->subTreeRoot->left = copy(other->left);
-		this->subTreeRoot->right = copy(other->right);
-		delete subTreeRoot;
-	}
-
 	
-	string findTracePrivate(node<T>* subTreeRoot,const T x,string trace)
+	string findTracePrivate(node<T>* subTreeRoot, const T x, string trace)
 	{
 		if (subTreeRoot == NULL)
 		{
@@ -377,7 +365,7 @@ private:
 			}
 			else
 			{
-				string a=findTracePrivate(subTreeRoot->left, x, trace+"L");
+				string a = findTracePrivate(subTreeRoot->left, x, trace + "L");
 				if (a != "?")
 				{
 					return a;
@@ -386,15 +374,30 @@ private:
 				{
 					a = findTracePrivate(subTreeRoot->right, x, trace + "R");
 				}
-					return a;				
+				return a;
 			}
 		}
+	}
+		void copy(node<T>* otherNode, node<T>* ourNode)
+		{
+			if (otherNode == NULL)
+			{
+				ourNode == NULL;
+			}
+			else
+			{
+				ourNode = new node<T>(otherNode->data, NULL, NULL);
+				copy(otherNode->left, ourNode->left);
+				copy(otherNode->right, ourNode->right);
+			}
+
 	};
 public:
 	bt(const bt<T> &other)
 		:root(nullptr)
 	{
-		this->root = copy(other.root);
+		cout << "copy constructor is called";
+		copy(other.root, root);//2riq root e nashiq
 	}
 	void add(const T& newData, const char* trace)// zashto po psevdonim
 	{
@@ -524,6 +527,9 @@ int main()
 	cout << "after mapping: ";
 	t.print();
 	cout << "Number of odd numbers: " << t.searchCount(odd) << endl;
+
+	bt<int> t2 = t;
+
 
 	/*char*s = "LRL";
 	cout << s << endl;
