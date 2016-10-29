@@ -1,5 +1,7 @@
 #include <iostream>
+#include <iomanip>
 #include <string.h>
+#include <string>
 #include <assert.h>
 
 using namespace std;
@@ -61,6 +63,33 @@ private:
 			printPrivate(subTreeRoot->right);
 		}
 	}
+	void prettyPrintPrivate(node<T>*subTreeRoot,int curLevel)
+	{
+		if (subTreeRoot == NULL)
+		{
+			return;// kakvo pravi??
+		}
+		else
+		{
+			if (subTreeRoot->right != NULL)
+			{
+				prettyPrintPrivate(subTreeRoot->right, curLevel + 4);
+			}
+			if (curLevel!=0) {
+				cout<<setw(curLevel) << ' ';
+			}
+			if (subTreeRoot->right != NULL)
+			{
+				cout << " /\n" << setw(curLevel) << ' '; 
+			}
+			cout << subTreeRoot->data << "\n ";
+			if (subTreeRoot -> left != NULL)
+			{
+				cout << setw(curLevel) << ' ' << " \\\n";// kakvo e 
+				prettyPrintPrivate(subTreeRoot->left, curLevel + 4);
+			}
+		}
+	};
 	bool memberPrivate(const T& searchedData, node<T>*subTreeRoot)const
 	{
 		if (subTreeRoot == NULL)
@@ -332,6 +361,35 @@ private:
 		this->subTreeRoot->right = copy(other->right);
 		delete subTreeRoot;
 	}
+
+	
+	string findTracePrivate(node<T>* subTreeRoot,const T x,string trace)
+	{
+		if (subTreeRoot == NULL)
+		{
+			return "?";
+		}
+		else
+		{
+			if (subTreeRoot->data == x)
+			{
+				return trace;
+			}
+			else
+			{
+				string a=findTracePrivate(subTreeRoot->left, x, trace+"L");
+				if (a != "?")
+				{
+					return a;
+				}
+				else
+				{
+					a = findTracePrivate(subTreeRoot->right, x, trace + "R");
+				}
+					return a;				
+			}
+		}
+	};
 public:
 	bt(const bt<T> &other)
 		:root(nullptr)
@@ -351,6 +409,10 @@ public:
 	{
 		printPrivate(root);
 		cout << endl;
+	}
+	void prettyPrint()
+	{
+		prettyPrintPrivate(root,1);
 	}
 	//checks if there is a node with the given data
 	bool member(const T& searchedData)
@@ -402,6 +464,11 @@ public:
 	{
 		return getElementPrivate(trace, root);
 	}
+	string findTrace(const T x)
+	{
+		string trace = "";
+		return findTracePrivate(root,x, trace);
+	}
 };
 bool odd(const int& a)
 {
@@ -437,6 +504,10 @@ int main()
 	t.add(14, "R");
 	t.add(15, "LR");
 	t.print();
+	cout << endl;
+	cout<<"the trace is: " << t.findTrace(12) << endl;
+	t.prettyPrint();
+
 	cout << t.member(14) << endl;
 	cout << endl;
 	cout << "Number of nodes:" << t.count() << endl;
@@ -453,8 +524,6 @@ int main()
 	cout << "after mapping: ";
 	t.print();
 	cout << "Number of odd numbers: " << t.searchCount(odd) << endl;
-
-	//TEST MEMBER
 
 	/*char*s = "LRL";
 	cout << s << endl;
