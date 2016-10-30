@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <vector>
 #include <string.h>
 #include <string>
 #include <assert.h>
@@ -63,7 +64,7 @@ private:
 			printPrivate(subTreeRoot->right);
 		}
 	}
-	void prettyPrintPrivate(node<T>*subTreeRoot,int curLevel)
+	void prettyPrintPrivate(node<T>*subTreeRoot, int curLevel)
 	{
 		if (subTreeRoot == NULL)
 		{
@@ -75,15 +76,15 @@ private:
 			{
 				prettyPrintPrivate(subTreeRoot->right, curLevel + 4);
 			}
-			if (curLevel!=0) {
-				cout<<setw(curLevel) << ' ';
+			if (curLevel != 0) {
+				cout << setw(curLevel) << ' ';
 			}
 			if (subTreeRoot->right != NULL)
 			{
-				cout << " /\n" << setw(curLevel) << ' '; 
+				cout << " /\n" << setw(curLevel) << ' ';
 			}
 			cout << subTreeRoot->data << "\n ";
-			if (subTreeRoot -> left != NULL)
+			if (subTreeRoot->left != NULL)
 			{
 				cout << setw(curLevel) << ' ' << " \\\n";// kakvo e 
 				prettyPrintPrivate(subTreeRoot->left, curLevel + 4);
@@ -350,7 +351,7 @@ private:
 			cout << "there is no node at that position" << endl;
 		}
 	}
-	
+
 	string findTracePrivate(node<T>* subTreeRoot, const T x, string trace)
 	{
 		if (subTreeRoot == NULL)
@@ -378,20 +379,66 @@ private:
 			}
 		}
 	}
-		void copy(node<T>* otherNode, node<T>* ourNode)
+	void copy(node<T>* otherNode, node<T>* ourNode)
+	{
+		if (otherNode == NULL)
 		{
-			if (otherNode == NULL)
+			ourNode == NULL;
+		}
+		else
+		{
+			ourNode = new node<T>(otherNode->data, NULL, NULL);
+			copy(otherNode->left, ourNode->left);
+			copy(otherNode->right, ourNode->right);
+		}
+	}
+	void listLeavesPrivate(node<T>* subTreeRoot,vector<T> &v)
+	{
+		if (subTreeRoot == NULL)
+		{
+			return;
+		}
+		/*else//tova e ako iskame ne samo listata a vsichki nodes
+		{
+			v.push_back(subTreeRoot->data);
+			listLeavesPrivate(subTreeRoot->left, v);
+			listLeavesPrivate(subTreeRoot->right, v);
+		}*/
+		else
+		{
+			if (subTreeRoot->left == NULL&& subTreeRoot->right==NULL)
 			{
-				ourNode == NULL;
+				v.push_back(subTreeRoot->data);
+			}
+			if (subTreeRoot->left != NULL)
+			{
+				listLeavesPrivate(subTreeRoot->left, v);
+			}
+			if (subTreeRoot->right != NULL)
+			{
+				listLeavesPrivate(subTreeRoot->right, v);
+			}
+		}
+	}
+	void levelVector(node<T>* subTreeRoot, vector<T> &v,int k,int level)
+	{
+		if (subTreeRoot == NULL)
+		{
+			return;
+		}
+		else
+		{
+			if (k == level)
+			{
+				v.push_back(subTreeRoot->data);
 			}
 			else
 			{
-				ourNode = new node<T>(otherNode->data, NULL, NULL);
-				copy(otherNode->left, ourNode->left);
-				copy(otherNode->right, ourNode->right);
+				levelVector(subTreeRoot->left, v, k, level + 1);
+				levelVector(subTreeRoot->right, v, k, level + 1);
 			}
-
-	};
+		}
+	}
 public:
 	bt(const bt<T> &other)
 		:root(nullptr)
@@ -415,7 +462,7 @@ public:
 	}
 	void prettyPrint()
 	{
-		prettyPrintPrivate(root,1);
+		prettyPrintPrivate(root, 1);
 	}
 	//checks if there is a node with the given data
 	bool member(const T& searchedData)
@@ -470,7 +517,19 @@ public:
 	string findTrace(const T x)
 	{
 		string trace = "";
-		return findTracePrivate(root,x, trace);
+		return findTracePrivate(root, x, trace);
+	}
+	vector<T> listLeaves()
+	{
+		vector<T> v;
+		listLeavesPrivate(root, v);
+		return v;
+	}
+	vector<T> level(int k)
+	{
+		vector<T> v;
+		levelVector(root, v,k,1);
+		return v;
 	}
 };
 bool odd(const int& a)
@@ -497,7 +556,16 @@ bool pred(int a)
 	else
 		return false;
 }
-
+template <typename T>
+void printVector(vector<T> &v)
+{
+	cout << "vector: ";
+	for (size_t i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << " ";
+	}
+	cout << endl;
+}
 
 int main()
 {
@@ -508,10 +576,12 @@ int main()
 	t.add(15, "LR");
 	t.print();
 	cout << endl;
-	cout<<"the trace is: " << t.findTrace(12) << endl;
 	t.prettyPrint();
 
-	cout << t.member(14) << endl;
+	printVector(t.listLeaves());
+	printVector(t.level(2));
+
+	/*cout << t.member(14) << endl;
 	cout << endl;
 	cout << "Number of nodes:" << t.count() << endl;
 	cout << "Number of even numbers: " << t.countEvens() << endl;
@@ -522,13 +592,14 @@ int main()
 	cout << "Number of leaves: " << t.countLeaves() << endl;
 	cout << "MaxLeaf: " << t.maxLeaf() << endl;
 	cout << "The data in this position is: " << t.getElement("L") << endl;
+	cout << "the trace is: " << t.findTrace(12) << endl;
 
 	t.map(plusOne);
 	cout << "after mapping: ";
 	t.print();
 	cout << "Number of odd numbers: " << t.searchCount(odd) << endl;
 
-	bt<int> t2 = t;
+	bt<int> t2 = t;*/
 
 
 	/*char*s = "LRL";
