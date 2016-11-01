@@ -439,6 +439,22 @@ private:
 			}
 		}
 	}
+	void serializePrivate(node<T>* subTreeRoot, ostream& out)
+	{
+		if (subTreeRoot == NULL)
+		{
+			out << "()";
+		}
+		else
+		{
+			out << "(";
+			out << subTreeRoot->data;
+			serializePrivate(subTreeRoot->right, out);
+			serializePrivate(subTreeRoot->left, out);
+			out << ")";
+		}
+
+	}
 public:
 	bt(const bt<T> &other)
 		:root(nullptr)
@@ -531,6 +547,11 @@ public:
 		levelVector(root, v,k,1);
 		return v;
 	}
+	void seriazlize(ostream& out)
+	{
+		serializePrivate(root, out);
+		cout << endl;
+	}
 };
 bool odd(const int& a)
 {
@@ -580,6 +601,8 @@ int main()
 
 	printVector(t.listLeaves());
 	printVector(t.level(2));
+	
+	t.seriazlize(cout);
 
 	/*cout << t.member(14) << endl;
 	cout << endl;
