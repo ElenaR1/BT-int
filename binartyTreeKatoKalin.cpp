@@ -455,6 +455,19 @@ private:
 		}
 
 	}
+	bool isCompletePrivate()
+	{
+		int c = countPrivate(root);
+		int h = findHeightPrivate(root);
+		if (c == pow(2, h) - 1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 public:
 	bt(const bt<T> &other)
 		:root(nullptr)
@@ -552,6 +565,10 @@ public:
 		serializePrivate(root, out);
 		cout << endl;
 	}
+	bool isComplete()
+	{
+		return isCompletePrivate();
+	}
 };
 bool odd(const int& a)
 {
@@ -601,6 +618,9 @@ int main()
 
 	printVector(t.listLeaves());
 	printVector(t.level(2));
+	
+	
+	cout << t.isComplete() << endl;
 	
 	t.seriazlize(cout);
 
