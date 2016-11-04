@@ -392,7 +392,7 @@ private:
 			copy(otherNode->right, ourNode->right);
 		}
 	}
-	void listLeavesPrivate(node<T>* subTreeRoot,vector<T> &v)
+	void listLeavesPrivate(node<T>* subTreeRoot, vector<T> &v)
 	{
 		if (subTreeRoot == NULL)
 		{
@@ -400,13 +400,13 @@ private:
 		}
 		/*else//tova e ako iskame ne samo listata a vsichki nodes
 		{
-			v.push_back(subTreeRoot->data);
-			listLeavesPrivate(subTreeRoot->left, v);
-			listLeavesPrivate(subTreeRoot->right, v);
+		v.push_back(subTreeRoot->data);
+		listLeavesPrivate(subTreeRoot->left, v);
+		listLeavesPrivate(subTreeRoot->right, v);
 		}*/
 		else
 		{
-			if (subTreeRoot->left == NULL&& subTreeRoot->right==NULL)
+			if (subTreeRoot->left == NULL&& subTreeRoot->right == NULL)
 			{
 				v.push_back(subTreeRoot->data);
 			}
@@ -420,7 +420,7 @@ private:
 			}
 		}
 	}
-	void levelVector(node<T>* subTreeRoot, vector<T> &v,int k,int level)
+	void levelVector(node<T>* subTreeRoot, vector<T> &v, int k, int level)
 	{
 		if (subTreeRoot == NULL)
 		{
@@ -467,6 +467,28 @@ private:
 		{
 			return false;
 		}
+	}
+	T& findElement(int i, node<T>*subTreeRoot, int pos)
+	{
+		if (pos == i&&subTreeRoot != NULL)
+		{
+			return subTreeRoot->data;
+		}
+		if (subTreeRoot == NULL)
+		{
+			T a = 0;
+			return a;
+		}
+		T n = findElement(i, subTreeRoot->left, (pos * 2 + 1));
+		if (n != 0)
+		{
+			return n;
+		}
+		else
+		{
+			n = findElement(i, subTreeRoot->right, (pos * 2 + 2));
+		}
+		return n;
 	}
 public:
 	bt(const bt<T> &other)
@@ -557,7 +579,7 @@ public:
 	vector<T> level(int k)
 	{
 		vector<T> v;
-		levelVector(root, v,k,1);
+		levelVector(root, v, k, 1);
 		return v;
 	}
 	void seriazlize(ostream& out)
@@ -568,6 +590,10 @@ public:
 	bool isComplete()
 	{
 		return isCompletePrivate();
+	}
+	 T& operator[](int index)
+	{
+		return findElement(index, root, 0);
 	}
 };
 bool odd(const int& a)
@@ -618,13 +644,13 @@ int main()
 
 	printVector(t.listLeaves());
 	printVector(t.level(2));
-	
-	
-	cout << t.isComplete() << endl;
-	
+	cout << t[4] << endl;
+
+	/*cout << t.isComplete() << endl;
+
 	t.seriazlize(cout);
 
-	/*cout << t.member(14) << endl;
+	cout << t.member(14) << endl;
 	cout << endl;
 	cout << "Number of nodes:" << t.count() << endl;
 	cout << "Number of even numbers: " << t.countEvens() << endl;
