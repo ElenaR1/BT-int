@@ -823,8 +823,67 @@ public:
 	{
 		changeDataPrivate(root);
 	}
-	
+	//5 zad 3 zzs
+	int evaluate()
+	{
+		return evaluate(root);
+	}
+	int evaluate(node<T>* subTreeRoot)
+	{
+		
+		if (subTreeRoot == NULL)
+		{
+			return 0;
+		}
+		if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL)
+		{
+			
+			return subTreeRoot->data - '0';
+		}
+		else
+		{
+			int x = evaluate(subTreeRoot->left);
+			int y = evaluate(subTreeRoot->right);
+			return applyOp(subTreeRoot->data, x, y);
+		}
+	}
+	int applyOp(char op,int a,int b)
+	{
+		if (op == '+')
+		{
+			return a + b;
+		}
+		 if (op == '-')
+		{
+			return a - b;
+		}
+		if (op == '*')
+		{
+			return a * b;
+		}
+		if (op == '/')
+		{
+			return a / b;
+		}
+	}
+	void testNodes(node<T>* subTreeRoot)
+	{
+		if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL)
+		{
+			assert(isdigit(subTreeRoot->data));
+		}
+		else
+		{
+			assert(subTreeRoot->data == '+' || subTreeRoot->data == '-' || subTreeRoot->data == '/' || subTreeRoot->data == '*');
+		}
+	}
+	void testAssignment()
+	{
+		assert(this->isComplete());
+		testNodes(root);
+	}
 };
+
 bool odd(const int& a)
 {
 	if (a % 2 != 0)
@@ -862,7 +921,7 @@ void printVector(vector<T> &v)
 
 int main()
 {
-	bt<int> t;
+	/*bt<int> t;
 	t.add(10, "");
 	t.add(8, "L");
 	t.add(14, "R");
@@ -874,7 +933,7 @@ int main()
 	t.changeData();
 	t.prettyPrint();
 
-	/*printVector(t.listLeaves());
+	printVector(t.listLeaves());
 	printVector(t.level(2));
 	cout << t[4] << endl;
 	cout << t.isBinary() << endl;
@@ -931,6 +990,17 @@ int main()
 	tt.insertedBOT(5);
 	//tt.prettyPrint();*/
 
+	bt<char> expressionTree;
+	expressionTree.add('+', "");
+	expressionTree.add('*', "L");
+	expressionTree.add('+', "R");
+	expressionTree.add('2', "LL");
+	expressionTree.add('3', "LR");
+	expressionTree.add('5', "RL");//ako e samo char ne moga da zpaisha 15 a samo ednocfreni chisla
+	expressionTree.add('0', "RR");
+	//expressionTree.add('0', "RRL"); ako go napravq tova se izpisva ssertion failed blagodarenie na testAssignment
+	expressionTree.testAssignment();
+	cout<<"the result after evaluating is: " << expressionTree.evaluate() << endl;
 
 
 
