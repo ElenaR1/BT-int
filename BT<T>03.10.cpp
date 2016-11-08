@@ -883,6 +883,26 @@ public:
 		assert(root!=NULL);//int this way we make sure that it is not empty (tova se iska ot zadachata)
 		testNodes(root);
 	}
+	/*
+	//finds the number of nodes that are not lists
+	int countNotLeaves(node<T>*subTreeRoot)
+	{
+		if (subTreeRoot == NULL)
+		{
+			return 0;
+		}
+		else
+		{
+			if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1 + countNotLeaves(subTreeRoot->left) + countNotLeaves(subTreeRoot->right);
+			}
+		}
+	}*/
 };
 
 bool odd(const int& a)
