@@ -879,7 +879,8 @@ public:
 	}
 	void testAssignment()
 	{
-		assert(this->isComplete());
+		//assert(this->isComplete()); taka proverqvame dali e pulno
+		assert(root!=NULL);//int this way we make sure that it is not empty (tova se iska ot zadachata)
 		testNodes(root);
 	}
 };
