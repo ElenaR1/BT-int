@@ -315,7 +315,9 @@ public:
 				operations.push(waiting<T>(OPER_TRAV, root));
 				unwind();
 			}
-			//a ako e NULL kakvo da pravib (NULL e naprimer kato izvikame end)
+			//unwind осигурява, че на върха на стека
+		//има операция за извличане или стекът е празен. Други
+		//състояния на стека не са допустими.
 		}
 		void unwind()
 		{
