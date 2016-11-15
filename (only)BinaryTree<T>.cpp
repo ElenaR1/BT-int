@@ -169,8 +169,9 @@ private:
 			delPtr->right = NULL;
 			delete delPtr;
 			return;// v tetradkata kudeto sum razpisvala kak tochno stav asum obqsnila zashto trqbva return
-			//s trieneto durvoto se promenq i sled kato e mahnat edin element e.g 15
-			//funkciqta shte produlji da se izpulnqva za sshtoto durvo no bez elementa 15
+			//s trieneto durvoto se promenq i sled kato e mahnat edin element e.g 10
+			//funkciqta shte produlji da se izpulnqva za sshtoto durvo no bez elementa 10
+			//ako mahame 10,10 shte stane 15 i shte vleze v sluchaq kudeto STR nqma nito 1 naslednik
 		}
 		if (subTreeRoot->right == NULL)
 		{
