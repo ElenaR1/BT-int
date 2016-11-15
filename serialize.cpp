@@ -562,7 +562,7 @@ public:
 		serializePrivate(root, out);
 		cout << endl;
 	}
-	void deserialize(istream &in)
+	void deserialize(istream &in)//tova e file-a v koito iskame da pishem. Vse edno infile>>string
 	{
 		deleteAll(root);
 		root = parseTree(in);
@@ -610,7 +610,8 @@ int main()
 
 	bt<int> test;
 	ifstream inFile("data.txt");
-	test.deserialize(inFile);
+	test.deserialize(inFile);//vikame file-a v koito iskame da pishem i navsqkude vuv fuknciite nagora svurzani
+	//s deserialize vikame file-a ni
 	cout << "---DESERIALIZED TREE-------" << endl;
 	test.serialize(cout);
 
