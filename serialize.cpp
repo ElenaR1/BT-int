@@ -13,8 +13,24 @@ struct node {
 	T data;
 	node<T> *left;
 	node<T> *right;
-	node() :left(NULL), right(NULL) {}
-	node(const T d, node<T> *l, node<T> *r) :data(d), left(l), right(r) {}
+	node() :left(NULL), right(NULL) { makeID(); }
+	node(const T d, node<T> *l, node<T> *r) :data(d), left(l), right(r)
+	{
+		makeID();
+	}
+	int getID()const
+	{
+		return id;
+	}
+private:
+	int id;
+	void makeID()
+	{
+		static int maxID = 0;//static variable-it keeps its value and is not destroyed even after it goes out of scope
+		++maxID;
+		id = maxID;
+	}
+
 };
 
 template <class T>
@@ -90,7 +106,36 @@ private:
 				prettyPrintPrivate(subTreeRoot->left, curLevel + 4);
 			}
 		}
-	};
+	}
+
+	void dottyPrint(node<T>*subTreeRoot, ostream& out)
+	{
+		if (subTreeRoot == NULL)
+		{
+			return;
+		}
+		out << subTreeRoot->getID()
+			<< "[label=\""
+			<< subTreeRoot->data
+			<< "\"];" << endl;
+
+		if (subTreeRoot->left != NULL)
+		{
+			out << subTreeRoot->getID()
+				<< "->"
+				<< subTreeRoot->left->getID()
+				<< endl;
+		}
+		if (subTreeRoot->right != NULL)
+		{
+			out << subTreeRoot->getID()
+				<< "->"
+				<< subTreeRoot->right->getID()
+				<< endl;
+		}
+		dottyPrint(subTreeRoot->left, out);
+		dottyPrint(subTreeRoot->right, out);
+	}
 	bool memberPrivate(const T& searchedData, node<T>*subTreeRoot)const
 	{
 		if (subTreeRoot == NULL)
@@ -427,7 +472,7 @@ private:
 		in >> data;
 		return new node<T>(data, parseTree(in), parseTree(in));
 	}
-	
+
 public:
 	bt(const bt<T> &other)
 		:root(nullptr)
@@ -452,6 +497,10 @@ public:
 	void prettyPrint()
 	{
 		prettyPrintPrivate(root, 1);
+	}
+	void dottyPrint(ostream& out)//shte predefiniram operator za izhod cout
+	{
+		dottyPrint(root, out);
 	}
 	//checks if there is a node with the given data
 	bool member(const T& searchedData)
@@ -553,13 +602,14 @@ int main()
 	t.add(14, "R");
 	t.add(15, "LR");
 	t.print();
+	t.dottyPrint(cout);
 	cout << endl;
 
 	cout << "............" << endl;
 	t.serialize(cout);
 
 	bt<int> test;
-	ifstream inFile ("data.txt");
+	ifstream inFile("data.txt");
 	test.deserialize(inFile);
 	cout << "---DESERIALIZED TREE-------" << endl;
 	test.serialize(cout);
