@@ -804,8 +804,31 @@ int main()
 	cout << "root-right-left iteration: ";
 	t.RootRightLeftIterationPrint();
 	
+	/*RootLeftRightIterator 
+	if (topNode->right != nullptr)
+	operations.push(waiting<T>(OPER_TRAV, topNode->right));
+	if (topNode->left != nullptr)
+	operations.push(waiting<T>(OPER_TRAV, topNode->left));	
+	operations.push(waiting<T>(OPER_PRINT, topNode));
+	
+	RightRootLeft
+	operations.pop();
+				if (topNode->left != nullptr)
+					operations.push(waiting<T>(OPER_TRAV, topNode->left));
+				operations.push(waiting<T>(OPER_PRINT, topNode));
+				if (topNode->right != nullptr)
+					operations.push(waiting<T>(OPER_TRAV, topNode->right));
+	Right Left Root
+	operations.push(waiting<T>(OPER_PRINT, topNode));
+					if (topNode->left != nullptr)
+					operations.push(waiting<T>(OPER_TRAV, topNode->left));			
+				if (topNode->right != nullptr)
+					operations.push(waiting<T>(OPER_TRAV, topNode->right));
+				
+	*/
 
-
+	
+	
 	/*t.print();
 	t.deleteElement(10);
 	t.print();
