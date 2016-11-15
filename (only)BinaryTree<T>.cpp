@@ -168,7 +168,9 @@ private:
 			subTreeRoot = subTreeRoot->right;
 			delPtr->right = NULL;
 			delete delPtr;
-			return;
+			return;// v tetradkata kudeto sum razpisvala kak tochno stav asum obqsnila zashto trqbva return
+			//s trieneto durvoto se promenq i sled kato e mahnat edin element e.g 15
+			//funkciqta shte produlji da se izpulnqva za sshtoto durvo no bez elementa 15
 		}
 		if (subTreeRoot->right == NULL)
 		{
