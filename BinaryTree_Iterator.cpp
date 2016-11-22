@@ -7,6 +7,12 @@
 #include <assert.h>
 
 using namespace std;
+/*	stack<w> s;
+	w a;
+	a.first = 1;
+	a.second = 5;
+	s.push(a);
+	s.push(w(1,2));*/
 template <class T>
 using mapFn = T(*)(const T&);
 template <class T>
