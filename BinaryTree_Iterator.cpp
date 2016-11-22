@@ -302,6 +302,11 @@ public:
 				cout << topNode->data << " ";
 			}
 			else if (topNode != nullptr) {
+				/*vmesto da push-va topNode->righ po tozi nachin moje:
+				waiting<T> a;
+				a.first = OPER_TRAV;
+				a.second = topNode->right;
+				operations.push(a);*/
 				operations.push(waiting<T>(OPER_TRAV, topNode->right));
 				operations.push(waiting<T>(OPER_PRINT, topNode));
 				operations.push(waiting<T>(OPER_TRAV, topNode->left));
@@ -344,7 +349,13 @@ public:
 				operations.pop();
 
 				if (topNode->right != nullptr)
-					operations.push(waiting<T>(OPER_TRAV, topNode->right));
+					/*{waiting<T> a;
+				a.first = OPER_TRAV;
+				a.second = topNode->right;
+				operations.push(a);}
+				vmesto dolniq red
+				*/
+				  operations.push(waiting<T>(OPER_TRAV, topNode->right));
 				operations.push(waiting<T>(OPER_PRINT, topNode));
 				if (topNode->left != nullptr)
 					operations.push(waiting<T>(OPER_TRAV, topNode->left));
