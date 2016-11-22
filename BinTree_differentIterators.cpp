@@ -20,6 +20,7 @@ struct node {
 
 #define OPER_PRINT 0
 #define OPER_TRAV 1
+#define LEAF 2
 
 template <class T>
 using waiting = pair<int, node<T>*>;
@@ -412,6 +413,60 @@ public:
 
 		cout << "}\n";
 	}
+	void notLeavesIterationPrint()
+	{
+		notLeavesIterationPrint(root);
+	}
+	void notLeavesIterationPrint(node<T>* subTreeRoot)
+	{
+		stack<waiting<T>>operations;
+		operations.push(waiting<T>(OPER_TRAV, subTreeRoot));
+		cout << "{";
+		while (!operations.empty())
+		{
+			waiting<T> topOperation = operations.top();
+			node<T>* topNode = topOperation.second;
+			operations.pop();
+			
+			if (topOperation.first == LEAF)
+			{
+				
+			topOperation = operations.top();
+				 topNode = topOperation.second;
+				operations.pop();
+			}
+
+			if (topOperation.first == OPER_PRINT)
+			{	
+				cout << topNode->data << " ";
+			}
+
+			else if (topNode->left != NULL&&topNode->right != NULL)
+			{
+				operations.push(waiting<T>(OPER_PRINT, topNode));
+				operations.push(waiting<T>(OPER_TRAV, topNode->right));
+				operations.push(waiting<T>(OPER_TRAV, topNode->left));
+			}
+			else if (topNode->right != NULL&&topNode->left == NULL)
+			{
+				
+				operations.push(waiting<T>(OPER_PRINT, topNode));
+				operations.push(waiting<T>(OPER_TRAV, topNode->right));
+			}
+			else if (topNode->left != NULL&&topNode->right == NULL)
+			{
+				
+				operations.push(waiting<T>(OPER_PRINT, topNode));
+				operations.push(waiting<T>(OPER_TRAV, topNode->left));
+			}
+			else if (topNode->left == NULL&&topNode->right == NULL)
+			{
+				
+				operations.push(waiting<T>(LEAF, topNode));
+			}
+		}
+		cout << "}\n";
+	}
 	class RootRightLeftIterator {
 	private:
 		stack<waiting<T>> operations;
@@ -437,7 +492,7 @@ public:
 			{
 
 				operations.pop();
-					if (topNode->left != nullptr)
+				if (topNode->left != nullptr)
 					operations.push(waiting<T>(OPER_TRAV, topNode->left));
 				if (topNode->right != nullptr)
 					operations.push(waiting<T>(OPER_TRAV, topNode->right));
@@ -500,12 +555,12 @@ public:
 	private:
 		stack <waiting<T>> operations;//ako beshe stack<int>
 	public:
-		LeftRightRootIterator (node<T>* root)
+		LeftRightRootIterator(node<T>* root)
 		{
 			if (root != nullptr)
 			{
 				operations.push(waiting<T>(OPER_TRAV, root));//tuk shteshe da e op.push(int a)
-				//no tipa na elementite v stack-a e waiting, a (OPER_TRAV,root) e value-to kato v gorniq primer 'a'
+															 //no tipa na elementite v stack-a e waiting, a (OPER_TRAV,root) e value-to kato v gorniq primer 'a'
 				unwind();
 			}
 		}
@@ -561,7 +616,7 @@ public:
 
 			return operations.top() != other.operations.top();
 		}
-		
+
 	};
 	LeftRightRootIterator beginLeftRightRootIterator()
 	{
@@ -803,32 +858,34 @@ int main()
 	t.postOrderIterationPrint();
 	cout << "root-right-left iteration: ";
 	t.RootRightLeftIterationPrint();
-	
-	/*RootLeftRightIterator 
+	cout << "nnot leaves iteration: ";
+	t.notLeavesIterationPrint();
+
+	/*RootLeftRightIterator
 	if (topNode->right != nullptr)
 	operations.push(waiting<T>(OPER_TRAV, topNode->right));
 	if (topNode->left != nullptr)
-	operations.push(waiting<T>(OPER_TRAV, topNode->left));	
+	operations.push(waiting<T>(OPER_TRAV, topNode->left));
 	operations.push(waiting<T>(OPER_PRINT, topNode));
-	
+
 	RightRootLeft
 	operations.pop();
-				if (topNode->left != nullptr)
-					operations.push(waiting<T>(OPER_TRAV, topNode->left));
-				operations.push(waiting<T>(OPER_PRINT, topNode));
-				if (topNode->right != nullptr)
-					operations.push(waiting<T>(OPER_TRAV, topNode->right));
+	if (topNode->left != nullptr)
+	operations.push(waiting<T>(OPER_TRAV, topNode->left));
+	operations.push(waiting<T>(OPER_PRINT, topNode));
+	if (topNode->right != nullptr)
+	operations.push(waiting<T>(OPER_TRAV, topNode->right));
 	Right Left Root
 	operations.push(waiting<T>(OPER_PRINT, topNode));
-					if (topNode->left != nullptr)
-					operations.push(waiting<T>(OPER_TRAV, topNode->left));			
-				if (topNode->right != nullptr)
-					operations.push(waiting<T>(OPER_TRAV, topNode->right));
-				
+	if (topNode->left != nullptr)
+	operations.push(waiting<T>(OPER_TRAV, topNode->left));
+	if (topNode->right != nullptr)
+	operations.push(waiting<T>(OPER_TRAV, topNode->right));
+
 	*/
 
-	
-	
+
+
 	/*t.print();
 	t.deleteElement(10);
 	t.print();
