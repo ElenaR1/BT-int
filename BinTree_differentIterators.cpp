@@ -427,42 +427,52 @@ public:
 			waiting<T> topOperation = operations.top();
 			node<T>* topNode = topOperation.second;
 			operations.pop();
-			
-			if (topOperation.first == LEAF)
+
+			/*if (topOperation.first == LEAF)
 			{
-				
-			topOperation = operations.top();
-				 topNode = topOperation.second;
+
+				topOperation = operations.top();
+				topNode = topOperation.second;
 				operations.pop();
-			}
+			}*/
 
 			if (topOperation.first == OPER_PRINT)
-			{	
+			{
 				cout << topNode->data << " ";
 			}
 
-			else if (topNode->left != NULL&&topNode->right != NULL)
-			{
-				operations.push(waiting<T>(OPER_PRINT, topNode));
+			else if (topNode != NULL) {
+
+				if (topNode->left != NULL&&topNode->right != NULL)
+				{
+					operations.push(waiting<T>(OPER_PRINT, topNode));
+					operations.push(waiting<T>(OPER_TRAV, topNode->right));
+					operations.push(waiting<T>(OPER_TRAV, topNode->left));
+				}
+				else if (topNode->right != NULL&&topNode->left == NULL)
+				{
+
+					operations.push(waiting<T>(OPER_PRINT, topNode));
+					operations.push(waiting<T>(OPER_TRAV, topNode->right));
+				}
+				else if (topNode->left != NULL&&topNode->right == NULL)
+				{
+
+					operations.push(waiting<T>(OPER_PRINT, topNode));
+					operations.push(waiting<T>(OPER_TRAV, topNode->left));
+				}
+				
+
+				/*//ako iskame da ima konkretno 2 naslednkia
 				operations.push(waiting<T>(OPER_TRAV, topNode->right));
+				
+				if (topNode->left != NULL&&topNode->right != NULL)
+				{
+					operations.push(waiting<T>(OPER_PRINT, topNode));
+				}
+				cout << "g";
 				operations.push(waiting<T>(OPER_TRAV, topNode->left));
-			}
-			else if (topNode->right != NULL&&topNode->left == NULL)
-			{
-				
-				operations.push(waiting<T>(OPER_PRINT, topNode));
-				operations.push(waiting<T>(OPER_TRAV, topNode->right));
-			}
-			else if (topNode->left != NULL&&topNode->right == NULL)
-			{
-				
-				operations.push(waiting<T>(OPER_PRINT, topNode));
-				operations.push(waiting<T>(OPER_TRAV, topNode->left));
-			}
-			else if (topNode->left == NULL&&topNode->right == NULL)
-			{
-				
-				operations.push(waiting<T>(LEAF, topNode));
+				*/
 			}
 		}
 		cout << "}\n";
@@ -713,6 +723,93 @@ public:
 		return LeftRootRightIterator(root);
 	}
 
+	class notLeavesIterator {
+	private:
+		stack <waiting<T>> operations;
+	public:
+		notLeavesIterator(node<T>* root)
+		{
+			if (root != nullptr)
+			{
+				operations.push(waiting<T>(OPER_TRAV, root));
+				unwind();
+			}
+		}
+		void unwind()
+		{
+			if (operations.empty())
+			{
+				return;
+			}
+			waiting<T> topOperation = operations.top();
+			node<T>* topNode = topOperation.second;
+			while (!operations.empty() && topOperation.first != OPER_PRINT)
+			{
+
+				operations.pop();
+				
+			 if (topNode->left != NULL&&topNode->right != NULL)
+			{
+				operations.push(waiting<T>(OPER_PRINT, topNode));
+				operations.push(waiting<T>(OPER_TRAV, topNode->right));
+				operations.push(waiting<T>(OPER_TRAV, topNode->left));
+			}
+			else if (topNode->right != NULL&&topNode->left == NULL)
+			{
+
+				operations.push(waiting<T>(OPER_PRINT, topNode));
+				operations.push(waiting<T>(OPER_TRAV, topNode->right));
+			}
+			else if (topNode->left != NULL&&topNode->right == NULL)
+			{
+
+				operations.push(waiting<T>(OPER_PRINT, topNode));
+				operations.push(waiting<T>(OPER_TRAV, topNode->left));
+			}
+				topOperation = operations.top();
+				topNode = topOperation.second;
+			}
+		}
+		T operator*()
+		{
+			assert(!operations.empty());
+			assert(operations.top().first == OPER_PRINT);
+			assert(operations.top().second != NULL);
+			return operations.top().second->data;
+
+		}
+		notLeavesIterator& operator ++ ()
+		{
+			assert(!operations.empty());
+			operations.pop();
+			unwind();
+			return *this;
+		}
+		bool operator != (const notLeavesIterator &other)
+		{
+
+			if (operations.empty())
+				return !other.operations.empty();
+
+			if (other.operations.empty())
+				return !operations.empty();
+
+			//и двете са непразни
+
+			return operations.top() != other.operations.top();
+		}
+
+	};
+	notLeavesIterator beginnotLeavesIterator()
+	{
+		return notLeavesIterator(root);
+	}
+	notLeavesIterator endnotLeavesIterator()
+	{
+		return notLeavesIterator(nullptr);
+	}
+
+
 
 	void postOrder()//л-д-к
 	{
@@ -826,6 +923,29 @@ void testRootRightLeftIterator()
 	assert(count == 4);
 
 }
+void notLeavesIterator()
+{
+	bt <int> t;
+
+	t.addNode(20);
+	t.addNode(30);
+	t.addNode(10);
+	t.addNode(15);
+	bt<int>::notLeavesIterator it = t.beginnotLeavesIterator();
+	assert(*it == 10);
+	++it;
+	
+	assert(*it == 20);
+	int count = 0;
+	for (it = t.beginnotLeavesIterator(); it != t.endnotLeavesIterator(); ++it)
+	{
+		cout << "it= " << *it << "count= " << count << endl;
+		count++;
+	}
+	cout << endl;
+	assert(count == 2);
+
+}
 
 int main()
 {
@@ -840,7 +960,7 @@ int main()
 	testIterator2();
 	testLeftRightRootIterator();
 	testRootRightLeftIterator();
-
+	notLeavesIterator();
 
 	cout << "in order: ";
 	t.inOrder();
