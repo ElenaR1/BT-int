@@ -381,19 +381,19 @@ private:
 	}
 	/*void copy(node<T>* otherNode, node<T>* ourNode)
 	{
-		if (otherNode == NULL)
-		{
-			ourNode == NULL;
-		}
-		else
-		{
-			ourNode = new node<T>(otherNode->data, NULL, NULL);
-			copy(otherNode->left, ourNode->left);
-			copy(otherNode->right, ourNode->right);
-		}
+	if (otherNode == NULL)
+	{
+	ourNode == NULL;
+	}
+	else
+	{
+	ourNode = new node<T>(otherNode->data, NULL, NULL);
+	copy(otherNode->left, ourNode->left);
+	copy(otherNode->right, ourNode->right);
+	}
 	}*/
 	static node<T>* copyTree(const node<T>* subTreeRoot)//static t.k ne se polzva ot chlen dannite na klasa i ne promenq nishto v
-		//durvoto. Print sushto moje da e static po sushtata logika. Vsichko koeto vzima node moje da e static		
+														//durvoto. Print sushto moje da e static po sushtata logika. Vsichko koeto vzima node moje da e static		
 	{
 		if (subTreeRoot == NULL)
 		{
@@ -541,7 +541,7 @@ private:
 				//vikam copyTree za STR->left t.k iskam sushtoto i nishto ne dobavqm
 				//a za str->right obrazuvam novo durvo
 			}
-			
+
 		}
 	}
 
@@ -554,7 +554,7 @@ private:
 			current = current->left;
 		}
 		return current->data;
-	}	
+	}
 	void deleteElement(node<T> *&subTreeRoot, const T&x)
 	{
 		T rootData = subTreeRoot->data;
@@ -623,8 +623,8 @@ private:
 			cout << "the root node with data " << rootData << " was deleted and the new root contains data: " << subTreeRoot->data;
 		}
 	}
-	
-	bool isBinaryPrivate(node<T>* subTreeRoot,int minData, int maxData)
+
+	bool isBinaryPrivate(node<T>* subTreeRoot, int minData, int maxData)
 	{
 		if (subTreeRoot == NULL)
 		{
@@ -647,31 +647,31 @@ private:
 		{
 			return;
 		}
-			int n = countPrivate(subTreeRoot);
-			subTreeRoot->data =n;
-			if (subTreeRoot->left != NULL)
-			{
-				changeDataPrivate(subTreeRoot->left);
-			}
-			if (subTreeRoot->right != NULL)
-			{
-				changeDataPrivate(subTreeRoot->right);
-			}
+		int n = countPrivate(subTreeRoot);
+		subTreeRoot->data = n;
+		if (subTreeRoot->left != NULL)
+		{
+			changeDataPrivate(subTreeRoot->left);
+		}
+		if (subTreeRoot->right != NULL)
+		{
+			changeDataPrivate(subTreeRoot->right);
+		}
 	}
-	
+
 public:
 	// i tova si raboti
 	/*bt(const bt<T> &other)
-		:root(nullptr)
+	:root(nullptr)
 	{
-		cout << "copy constructor is called" << endl;
-		copy(other.root, root);//2riq root e nashiq
+	cout << "copy constructor is called" << endl;
+	copy(other.root, root);//2riq root e nashiq
 	}*/
 	bt(const bt<T>& other)
 	{
 		cout << "Copt constructor is called now " << endl;
 		root = copyTree(other.root);//ne moje prosto root=other.root zashtoto taka shte sochi kum sushtata kutiika kum koqto 
-		//sochi i drugiq root, a nie iskame da se obrazuvat novi sushtite kutiik
+									//sochi i drugiq root, a nie iskame da se obrazuvat novi sushtite kutiik
 	}
 	bt& operator=(const bt<T>& other)
 	{
@@ -776,10 +776,10 @@ public:
 	{
 		vector<T> v;
 		levelVector(root, v, k, 1);
-		return (v.size()+1);
+		return (v.size() + 1);
 	}
-	
-	
+
+
 	void seriazlize(ostream& out)
 	{
 		serializePrivate(root, out);
@@ -795,7 +795,7 @@ public:
 	}
 	bt& insertBOT(const T& addData)//vseki put vmukvame v staroto durvo
 	{
-		insertBotPrivate(root, addData);	
+		insertBotPrivate(root, addData);
 		return *this;
 	}
 	bt insertedBOT(const T& addData)//tuk vseki put kato dobavqme pravim novo durvo
@@ -815,8 +815,8 @@ public:
 	//3 zad 3 zzs
 	bool isBinary()
 	{
-		
-		return isBinaryPrivate(root,INT_MIN,INT_MAX);
+
+		return isBinaryPrivate(root, INT_MIN, INT_MAX);
 	}
 	//4 zad 3 zzs
 	void changeData()
@@ -830,14 +830,14 @@ public:
 	}
 	int evaluate(node<T>* subTreeRoot)
 	{
-		
+
 		if (subTreeRoot == NULL)
 		{
 			return 0;
 		}
 		if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL)
 		{
-			
+
 			return subTreeRoot->data - '0';
 		}
 		else
@@ -847,13 +847,13 @@ public:
 			return applyOp(subTreeRoot->data, x, y);
 		}
 	}
-	int applyOp(char op,int a,int b)
+	int applyOp(char op, int a, int b)
 	{
 		if (op == '+')
 		{
 			return a + b;
 		}
-		 if (op == '-')
+		if (op == '-')
 		{
 			return a - b;
 		}
@@ -880,28 +880,28 @@ public:
 	void testAssignment()
 	{
 		//assert(this->isComplete()); taka proverqvame dali e pulno
-		assert(root!=NULL);//int this way we make sure that it is not empty (tova se iska ot zadachata)
+		assert(root != NULL);//int this way we make sure that it is not empty (tova se iska ot zadachata)
 		testNodes(root);
 	}
 	/*
 	//finds the number of nodes that are not lists
 	int countNotLeaves(node<T>*subTreeRoot)
 	{
-		if (subTreeRoot == NULL)
-		{
-			return 0;
-		}
-		else
-		{
-			if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL)
-			{
-				return 0;
-			}
-			else
-			{
-				return 1 + countNotLeaves(subTreeRoot->left) + countNotLeaves(subTreeRoot->right);
-			}
-		}
+	if (subTreeRoot == NULL)
+	{
+	return 0;
+	}
+	else
+	{
+	if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL)
+	{
+	return 0;
+	}
+	else
+	{
+	return 1 + countNotLeaves(subTreeRoot->left) + countNotLeaves(subTreeRoot->right);
+	}
+	}
 	}*/
 };
 
@@ -947,7 +947,7 @@ int main()
 	t.add(8, "L");
 	t.add(14, "R");
 	t.add(9, "LR");
-	
+
 	t.print();
 	cout << endl;
 	t.prettyPrint();
@@ -986,10 +986,10 @@ int main()
 
 	bt<int> t2 = t;//cpy constr
 	t2.prettyPrint();*/
-	
-	
 
-	/*bt<int> binaryt;
+
+
+/*	bt<int> binaryt;
 	binaryt.insertBOT(56);
 	binaryt.insertBOT(23);
 	binaryt.insertBOT(68);
@@ -999,9 +999,23 @@ int main()
 	binaryt.insertBOT(65);
 	binaryt.insertBOT(59);
 	cout << endl;
-	cout << binaryt.minElement() << endl;
-	binaryt.deleteElement(56);
+	cout << endl;
+	cout << endl;
+	//cout << binaryt.minElement() << endl;
 	binaryt.prettyPrint();*/
+
+	bt<int> t1;
+	t1.insertBOT(15);
+	t1.insertBOT(10);
+	t1.insertBOT(20);
+	t1.insertBOT(12);
+	t1.insertBOT(9);
+	t1.prettyPrint();
+	cout << endl;
+	//bt<int> t2;
+	//t2 = binaryt.insertNode(30);
+	//t2.prettyPrint();
+	t1.insertedBOT(50).prettyPrint();
 
 	/*cout << endl;
 	bt<int> tt;
@@ -1011,7 +1025,8 @@ int main()
 	tt.insertedBOT(5);
 	//tt.prettyPrint();*/
 
-	bt<char> expressionTree;
+
+	/*bt<char> expressionTree;
 	expressionTree.add('+', "");
 	expressionTree.add('*', "L");
 	expressionTree.add('+', "R");
@@ -1021,7 +1036,7 @@ int main()
 	expressionTree.add('0', "RR");
 	//expressionTree.add('0', "RRL"); ako go napravq tova se izpisva ssertion failed blagodarenie na testAssignment
 	expressionTree.testAssignment();
-	cout<<"the result after evaluating is: " << expressionTree.evaluate() << endl;
+	cout<<"the result after evaluating is: " << expressionTree.evaluate() << endl;*/
 
 
 
