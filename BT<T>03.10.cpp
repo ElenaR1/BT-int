@@ -1015,7 +1015,8 @@ int main()
 	//bt<int> t2;
 	//t2 = binaryt.insertNode(30);
 	//t2.prettyPrint();
-	t1.insertedBOT(50).prettyPrint();
+	t1.insertedBOT(50).prettyPrint();//suzdava se edno napulno novo durvo s elemenite na t1 + 50. Ako napravim
+	//samo insertNode shte vidim che ne se poluchava novo otdelno durvo a prosto se dobavq kum staroto
 
 	/*cout << endl;
 	bt<int> tt;
