@@ -612,7 +612,7 @@ int main()
 	ifstream inFile("data.txt");
 	test.deserialize(inFile);//vikame file-a v koito iskame da pishem i navsqkude vuv fuknciite nagora svurzani
 	//s deserialize vikame file-a ni
-	cout << "---DESERIALIZED TREE-------" << endl;
+	cout << "---DESERIALIZED TREE-------" << endl;//v codeblocks raboti, tuk-ne
 	test.serialize(cout);
 
 	/*cout << "the trace is: " << t.findTrace(12) << endl;
