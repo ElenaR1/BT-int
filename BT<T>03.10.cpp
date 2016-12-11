@@ -868,6 +868,7 @@ public:
 	}
 	void testNodes(node<T>* subTreeRoot)
 	{
+		//assert(subTreeRoot->left == NULL&&subTreeRoot->right == NULL || subTreeRoot->left &&subTreeRoot->right);
 		if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL)
 		{
 			assert(isdigit(subTreeRoot->data));
@@ -876,6 +877,8 @@ public:
 		{
 			assert(subTreeRoot->data == '+' || subTreeRoot->data == '-' || subTreeRoot->data == '/' || subTreeRoot->data == '*');
 		}
+	//testNodes(subTreeRoot->left);ne stava s tqh
+	//	testNodes(subTreeRoot->right);
 	}
 	void testAssignment()
 	{
