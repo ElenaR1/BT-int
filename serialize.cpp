@@ -606,6 +606,8 @@ int main()
 	cout << endl;
 
 	cout << "............" << endl;
+	//fstream outfile("tree.txt");
+	//t.serialize(outfile); suzdavam tekstov file tree i zapisvam v nego
 	t.serialize(cout);
 
 	bt<int> test;
