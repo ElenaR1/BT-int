@@ -463,28 +463,26 @@ public:
 			waiting<T> topOperation = operations.top();
 			node<T>* topNode = topOperation.second;
 			operations.pop();
-			if (topOperation.first == WAS_HERE)
-			{
-				topOperation = operations.top();
-				topNode = topOperation.second;
-				operations.pop();
-			}
+
+
 			if (topOperation.first == OPER_PRINT)
 			{
 				cout << topNode->data << " ";
 			}
-			else if (topNode != nullptr) {
-				operations.push(waiting<T>(OPER_TRAV, topNode->right));
-				operations.push(waiting<T>(OPER_TRAV, topNode->left));
+			else if (topNode != NULL)//tazi proverka si ni e zaduljitelna
+			{
+				if (topNode->right != nullptr)
+				{
+					operations.push(waiting<T>(OPER_TRAV, topNode->right));
+				}
 				if (topNode->left == NULL&&topNode->right == NULL)
 				{
 					operations.push(waiting<T>(OPER_PRINT, topNode));
 				}
-				else
+				if (topNode->left != nullptr)
 				{
-					operations.push(waiting<T>(WAS_HERE, topNode));
+					operations.push(waiting<T>(OPER_TRAV, topNode->left));
 				}
-
 			}
 		}
 		cout << "}\n";
@@ -493,6 +491,7 @@ public:
 	{
 		boolIteration(root, f);
 	}
+
 	void boolIteration(node<T>* subTreeRoot, predicat<T> f)
 	{
 		stack <waiting<T>> operations;
@@ -503,29 +502,22 @@ public:
 			waiting<T> topOperation = operations.top();
 			node<T>* topNode = topOperation.second;
 			operations.pop();
-			if (topOperation.first == WAS_HERE)
-			{
-				topOperation = operations.top();
-				topNode = topOperation.second;
-				operations.pop();
-			}
+
 			if (topOperation.first == OPER_PRINT)
 			{
 				cout << topNode->data << " ";
 			}
-			else if (topNode != nullptr) {
+			else if (topNode != nullptr)
+			{
 				operations.push(waiting<T>(OPER_TRAV, topNode->right));
-				operations.push(waiting<T>(OPER_TRAV, topNode->left));
+
 				if (f(topNode->data))
 				{
 					operations.push(waiting<T>(OPER_PRINT, topNode));
 				}
-				else
-				{
-					operations.push(waiting<T>(WAS_HERE, topNode));
-				}
-
+				operations.push(waiting<T>(OPER_TRAV, topNode->left));
 			}
+
 		}
 		cout << "}\n";
 	}
@@ -797,36 +789,34 @@ public:
 			node<T>* topNode = topOperation.second;
 			while (!operations.empty() && topOperation.first != OPER_PRINT)
 			{
+
 				operations.pop();
+				/*was here ne e nujno
 				if (topOperation.first == WAS_HERE)
 				{
-					topOperation = operations.top();
-					topNode = topOperation.second;
-					operations.pop();
+				topOperation = operations.top();
+				topNode = topOperation.second;
+				operations.pop();
 				}
-				//ako e taka ne stava a trqbva da e s else-a
-				/*if (!(topNode->left == NULL&&topNode->right == NULL))
-				{
-				cout <<"was here "<< topNode->data << endl;
-				operations.push(waiting<T>(WAS_HERE, topNode));
-				}*/
+				*/
 				if (topNode->right != NULL)
 				{
 					operations.push(waiting<T>(OPER_TRAV, topNode->right));
-				}
-				if (topNode->left != NULL)
-				{
-					operations.push(waiting<T>(OPER_TRAV, topNode->left));
 				}
 				if (topNode->left == NULL&&topNode->right == NULL)
 				{
 					operations.push(waiting<T>(OPER_PRINT, topNode));
 				}
-				else
+				if (topNode->left != NULL)
 				{
-					//cout << "was here " << topNode->data << endl;-nqkoi minavat po 2 puti ?
-					operations.push(waiting<T>(WAS_HERE, topNode));
+					operations.push(waiting<T>(OPER_TRAV, topNode->left));
 				}
+
+				/*else
+				{
+				//cout << "was here " << topNode->data << endl;-nqkoi minavat po 2 puti ?
+				operations.push(waiting<T>(WAS_HERE, topNode));
+				}*/
 
 				topOperation = operations.top();
 				topNode = topOperation.second;
@@ -1127,7 +1117,7 @@ void testboolItreator()
 	t.addNode(24);
 	t.addNode(27);
 	bt<int>::boolIterator it = t.beginboolIterator(odd);
-	
+
 	assert(*it == 15);
 	++it;
 	++it;
@@ -1161,7 +1151,7 @@ int main()
 	testRootRightLeftIterator();
 	testlistIterator();
 	testboolItreator();
-	
+
 	cout << "in order: ";
 	t.inOrder();
 	cout << endl;
@@ -1188,6 +1178,7 @@ int main()
 	cout << endl;
 	cout << "nodes that fulfill the predicat Iteration: ";
 	t.boolIteration(odd);
+	t.boolIteration(NULL, odd);
 
 	/*t.print();
 	t.deleteElement(10);
