@@ -230,7 +230,8 @@ void heapSort(int arr[], int n)
 		swap(arr[0], arr[i]);
 
 		// call max heapify on the reduced heap
-		heapify(arr, i, 0);
+		heapify(arr, i, 0);/ne stigame do psoledniq element vuoshte t.k podavame i=n-1 kato razmer na masiva kato vikame heapify
+		//a razmerut realno e n=> posledniq elemet ne se vzima predvid
 	}
 }
 
