@@ -39,3 +39,35 @@ int main()
 	print(lst);
 	return 0;
 }
+
+ //queue STL
+#include <iostream>
+#include <queue>
+using namespace std;
+
+void pr(queue<int> q)
+{
+	while (!q.empty())
+	{
+		cout << q.front() << " ";
+		q.pop();
+	}
+	cout << endl;
+}
+
+int main()
+{
+	queue<int> q;
+	for (size_t i = 0; i < 5; i++)
+	{
+		q.push(i);
+	}
+	cout << q.back();//4
+	pr(q);//0 1 2 3 4 
+	q.pop();
+	pr(q);//1 2 3 4 
+	q.pop();
+	pr(q);//1 2 3
+
+	return 0;
+}
