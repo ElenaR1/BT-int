@@ -182,6 +182,9 @@ int main()
 }
 
 
+
+
+
 #include <iostream>
 #include <string.h>
 
@@ -241,20 +244,28 @@ void heapSort(int arr[], int n)
 		swap(arr[0], arr[i]);
 
 		// call max heapify on the reduced heap
-		heapify(arr, i, 0);/ne stigame do psoledniq element vuoshte t.k podavame i=n-1 kato razmer na masiva kato vikame heapify
-		//a razmerut realno e n=> posledniq elemet ne se vzima predvid
+		heapify(arr, i, 0); // ne stigame do psoledniq element vuoshte t.k podavame i = n - 1 kato razmer na masiva kato vikame heapify
+			//a razmerut realno e n=> posledniq elemet ne se vzima predvid
 	}
+}
+void heapSortDescendingOrder(int arr[], int n)
+{
+	// Build heap (rearrange array)
+	//(n-1)/2 1viqt element koito e nalednik
+	for (int i = (n - 1) / 2; i >= 0; i--)
+		heapify(arr, n, i);
 }
 
 int main() {
 
 	int a[7] = { 4,10,3,5,1,8,7 };
-	heapSort(a, 7);
-
+	heapSort(a, 7);//ascendingOrder
+	//heapSortDescendingOrder(a,7);
 	for (size_t i = 0; i < 7; i++)
 	{
 		cout << a[i] << " ";
 	}
+	
 	return 0;
 }
 
