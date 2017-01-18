@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -84,7 +85,7 @@ public:
 	}
 	T extractMin()
 	{
-	
+
 		if (this->isEmpty()) {
 			throw length_error("No elements in heap.");
 		}
@@ -96,10 +97,11 @@ public:
 			arr.pop_back();
 			return data;
 		}
-		
+
 		data = arr.front();
 		arr.front() = arr.back();
 		arr.pop_back();
+		cout << " del ";
 		heapify();
 
 		return data;
@@ -141,6 +143,14 @@ public:
 		arr.pop_back();
 		heapDown(index);
 	}
+	void print()
+	{
+		for (size_t i = 0; i < arr.size(); i++)
+		{
+			cout << arr[i] << " ";
+		}
+		cout << endl;
+	}
 
 };
 int main()
@@ -158,18 +168,19 @@ int main()
 	cout << minHeap.isEmpty() << endl; // 0
 
 	cout << minHeap.getMin() << endl; // -1
-
+	minHeap.print();
 
 
 	while (!minHeap.isEmpty()) {
 		cout << minHeap.extractMin() << " ";
 	} // -1 0 2 4 5 15 23
 	cout << endl;
+	cout << minHeap.isEmpty();
 
-	
 
 	return 0;
 }
+
 
 #include <iostream>
 #include <string.h>
