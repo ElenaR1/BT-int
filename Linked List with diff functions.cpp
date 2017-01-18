@@ -483,7 +483,7 @@ public:
 		return newList;
 	}
 
-	
+
 	list InterleaveLists(list<int> l2)
 	{
 		cout << "InterleaveLists: " << endl;
@@ -500,12 +500,12 @@ public:
 
 		while (temp1 != NULL&&temp2 != NULL)
 		{
-				T dat = temp1->data;
-				T dat2 = temp2->data;
-				newList.addEnd(dat);
-				newList.addEnd(dat2);
-				temp1 = temp1->next;
-				temp2 = temp2->next;	
+			T dat = temp1->data;
+			T dat2 = temp2->data;
+			newList.addEnd(dat);
+			newList.addEnd(dat2);
+			temp1 = temp1->next;
+			temp2 = temp2->next;
 		}
 		if (temp1 == NULL)
 		{
@@ -527,10 +527,36 @@ public:
 		}
 		return newList;
 	}
+	void reverse()
+	{
+		curr = head;
+		node<T>* prev = new node<T>();
+		node<T>* next;
+		while (curr != NULL)
+		{
+			next = curr->next;
+			curr->next = prev;
+			prev = curr;
+			curr = next;
+		}
+		head = prev;
+	}
 };
 
 int main()
 {
+	list<int> ll;
+	ll.addEnd(1);
+	ll.addEnd(2);
+	ll.addEnd(3);
+	ll.addEnd(4);
+	ll.print();
+	cout << endl;
+	ll.reverse();
+	ll.print();
+	cout << endl;
+	cout << "..........." << endl;
+
 	list<int> l1;
 	l1.addEnd(5);
 	l1.addEnd(2);
@@ -566,6 +592,7 @@ int main()
 	l3.addEnd(3);
 	l3.addEnd(17);
 	cout << "..........\n";
+	cout << "merged lists: ";
 	l2.mergeList(l3).print();
 	cout << "..........\n";
 	l2.InterleaveLists(l3).print();
