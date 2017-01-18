@@ -33,6 +33,39 @@ int main()
 	int b[3] = { 4,2,5 };
 	cout << disjointt(a, 3, 3, b) << endl;
   
+
+	
+#include <iostream>
+#include <map>
+using namespace std;
+
+bool func(int*a,int*b,int n1,int n2)
+{
+    map<int,bool> funcmap;
+    for (int i=0;i<n1;i++)
+    {
+        funcmap[a[i]]=true;
+    }
+     for (int i=0;i<n2;i++)
+    {
+        if(funcmap.find(b[i])!=funcmap.end())//ako vurne funcmap.end() zmachi ne go e nameril
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main()
+{
+
+    int a[4]={1,2,5,7};
+    int b[5]={10,9,0,4,6};
+    cout<<func(a,b,4,5);
+
+    return 0;
+}
+
   
   4//Implement queue using two stacks.
   #include <iostream>
