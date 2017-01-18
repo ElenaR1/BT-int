@@ -115,6 +115,8 @@ int main()
 
 	
 	
+
+	
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -133,7 +135,7 @@ struct node
 	T data;
 	node<T>* left;
 	node<T>* right;
-	node():left(nullptr),right(nullptr){}
+	node() :left(nullptr), right(nullptr) {}
 	node(const T d, node<T> *l, node<T> *r) :data(d), left(l), right(r) {}
 };
 template <typename T>
@@ -141,25 +143,25 @@ class tree
 {
 private:
 	node<T>* root;
-	bool add(T x, char*trace,node<T>* &subTreeRoot)
+	void add(T x, char*trace, node<T>* &subTreeRoot)
 	{
 		if (subTreeRoot == NULL)
 		{
 			if (strlen(trace) == 0)
 			{
 				subTreeRoot = new node<T>(x, NULL, NULL);
-				return true;
+
 			}
 		}
 		if (strlen(trace) > 0)
 		{
 			if (trace[0] == 'L')
 			{
-				return add(x, trace + 1, subTreeRoot->left);
+				 add(x, trace + 1, subTreeRoot->left);
 			}
 			if (trace[0] == 'R')
 			{
-				return add(x, trace + 1, subTreeRoot->right);
+				 add(x, trace + 1, subTreeRoot->right);
 			}
 		}
 	}
@@ -195,12 +197,12 @@ private:
 			cout << subTreeRoot->data << "\n ";
 			if (subTreeRoot->left != NULL)
 			{
-				cout << setw(curLevel) << ' ' << " \\\n";// kakvo e 
+				cout << setw(curLevel) << ' ' << " \\\n";// kakvo e
 				prettyPrintPrivate(subTreeRoot->left, curLevel + 4);
 			}
 		}
 	}
-	bool member(const T& x,node<T>* subTreeRoot )
+	bool member(const T& x, node<T>* subTreeRoot)
 	{
 		if (subTreeRoot == NULL) return false;
 		else
@@ -254,29 +256,29 @@ private:
 			return max(findHeightPrivate(subTreeRoot->left), findHeightPrivate(subTreeRoot->right)) + 1;
 		}
 	}
-	void longestSequence(node<T>* subTreeRoot,T expected, int curLen, int &len)
+	void longestSequence(node<T>* subTreeRoot, T expected, int curLen, int &len)
 	{
 		if (subTreeRoot == NULL) return;
-		
+
 		if (subTreeRoot->data == expected)
-			curLen ++;
+			curLen++;
 		else
 			curLen = 1;
 
 		len = max(len, curLen);
-		
-			cout << len << " ";
-		if(subTreeRoot->right)
-		longestSequence(subTreeRoot->right, subTreeRoot->data + 1, curLen, len);
-		
-		if(subTreeRoot->left)
-		longestSequence(subTreeRoot->left, subTreeRoot->data + 1, curLen, len);
+
+		cout << len << " ";
+		if (subTreeRoot->right)
+			longestSequence(subTreeRoot->right, subTreeRoot->data + 1, curLen, len);
+
+		if (subTreeRoot->left)
+			longestSequence(subTreeRoot->left, subTreeRoot->data + 1, curLen, len);
 	}
 public:
-	tree() :root(nullptr){}
-	bool add(T x, char*trace)
+	tree() :root(nullptr) {}
+	void add(T x, char*trace)
 	{
-		return add(x, trace, root);
+		 add(x, trace, root);
 	}
 	void print()
 	{
@@ -288,7 +290,7 @@ public:
 	}
 	bool member(const T& x)
 	{
-		return member(x,root);
+		return member(x, root);
 	}
 	~tree()
 	{
@@ -306,7 +308,7 @@ public:
 	int longestSequence()
 	{
 		int len = 0;
-		longestSequence(root,root->data, 0,len);
+		longestSequence(root, root->data, 0, len);
 		return len;
 	}
 	//2. Construct a binary tree from given postorder and inorder traversals.
@@ -314,22 +316,22 @@ public:
 	{
 		if (start > end) return NULL;
 		node<T>* newNode = new node<T>(post[index], NULL, NULL);//vzima posledniq element na postorder-a
-			index--;
+		index--;
 		//if this node has no children
 		if (start == end)
-			return NULL;
+			return newNode;
 		/* Else find the index of this node in Inorder
 		traversal */
 		int itindex = search(in, start, end, newNode->data);
 
-		newNode->right = buildTree(in, post, itindex+1, end, index);
-		newNode->right = buildTree(in, post, start, itindex-1, index );
+		newNode->right = buildTree(in, post, itindex + 1, end, index);
+		newNode->left = buildTree(in, post, start, itindex - 1, index);
 	}
-	node<T>* buildTree(int*in,int*post,int n)
+	node<T>* buildTree(int*in, int*post, int n)
 	{
 		int index = n - 1;
 		return buildTree(in, post, 0, n - 1, index);
-		
+
 	}
 	/* Function to find index of value in arr[start...end]
 	The function assumes that value is postsent in in[] */
@@ -343,23 +345,83 @@ public:
 		}
 		return i;
 	}
+	bool isLeaf(node<T>* subTreeRoot,T data)
+	{
+        if(subTreeRoot->data==data&&subTreeRoot->left==NULL&&subTreeRoot->right==NULL)
+            return true;
+        else if(subTreeRoot->left!=NULL)
+        {
+            return isLeaf(subTreeRoot->left,data);
+        }
+        else if(subTreeRoot->right!=NULL)
+        {
+            return isLeaf(subTreeRoot->right,data);
+        }
+
+	}
+	bool isLeaf(T data)
+	{
+	    return isLeaf(root,data);
+	}
+	void sumofAllLeft(node<T>* subTreeRoot,int& sum,bool flag)
+	{
+        if(subTreeRoot->left==NULL&&subTreeRoot->right==NULL&&flag==1)
+        {
+           sum+=subTreeRoot->data;
+        }
+
+           if(subTreeRoot->left!=NULL)
+            sumofAllLeft(subTreeRoot->left,sum,1);
+              if(subTreeRoot->right!=NULL)
+            sumofAllLeft(subTreeRoot->right,sum,0);
+	}
+	int sumofAllLeft2(node<T>* subTreeRoot,bool flag)
+	{
+	    if(subTreeRoot==NULL) return 0;
+	    if(subTreeRoot->left==NULL&&subTreeRoot->right==NULL&&flag==1)
+        {
+           return subTreeRoot->data;
+        }
+
+          return  sumofAllLeft2(subTreeRoot->left,1)+sumofAllLeft2(subTreeRoot->right,0);
+	}
+	int sumofAllLeft2()
+	{
+
+        cout<<"sum of all left2: "<<endl;
+	    return sumofAllLeft2(root,1);
+
+	}
+
+	int sumofAllLeft()
+	{
+	    int sum=0;
+        cout<<"sum of all left: "<<endl;
+	     sumofAllLeft(root,sum,1);
+	    return sum;
+	}
 
 };
 int main() {
 	tree<int> t;
-	t.add(6,"");
+	t.add(6, "");
 	t.add(9, "R");
 	t.add(10, "RR");
+	t.add(5, "RRL");
 	t.add(11, "RRR");
 	t.add(7, "L");
 	t.prettyPrint();
 	cout << endl;
-	cout << t.longestSequence();
-
+	cout << t.longestSequence()<<endl;
+    cout<<t.isLeaf(7)<<endl;
+    cout<<t.isLeaf(9)<<endl;
+    cout<<t.sumofAllLeft()<<endl;
+     cout<<t.sumofAllLeft2()<<endl;
 	int inOrder[] = { 4,2,5,1,6,7,3,8 };
 	int postOrder[] = { 4,5,2,6,7,8,3,1 };
 	tree<int> ord;
 	ord.buildTree(inOrder, postOrder, 8);
-	
+
 	return 0;
 }
+
