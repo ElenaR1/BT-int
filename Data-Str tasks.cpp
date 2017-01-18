@@ -458,3 +458,362 @@ int main() {
 	return 0;
 }
 
+	
+	
+	
+	
+	
+	
+	
+//Tree
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <string.h>
+#include <string>
+#include <assert.h>
+
+using namespace std;
+template <typename T>
+using mapFn = T(*)(const T&);
+template<typename T>
+struct node {
+	T data;
+	node<T>* left;
+	node<T>* right;
+	node() :left(nullptr), right(nullptr) {}
+	node(const T d, node<T> *l, node<T> *r) :data(d), left(l), right(r) {}
+};
+
+template <typename T>
+class tree
+{
+private:
+	node<T>*root;
+	void add(T x, char*trace, node<T>* &subTreeRoot)
+	{
+		if (subTreeRoot == NULL)
+		{
+			if (strlen(trace) == 0)
+				subTreeRoot = new node<T>(x, NULL, NULL);
+		}
+		if (strlen(trace) > 0)
+		{
+			if (trace[0] == 'L')
+				add(x, trace + 1, subTreeRoot->left);
+			if (trace[0] == 'R')
+				add(x, trace + 1, subTreeRoot->right);
+		}
+	}
+	void print(node<T>* subTreeRoot)
+	{
+		if (subTreeRoot == NULL) return;
+		else
+		{
+			cout << subTreeRoot->data << " ";
+			print(subTreeRoot->left);
+			print(subTreeRoot->right);
+		}
+	}
+	void prettyPrintPrivate(node<T>*subTreeRoot, int curLevel)
+	{
+		if (subTreeRoot == NULL)
+		{
+			return;// kakvo pravi??
+		}
+		else
+		{
+			if (subTreeRoot->right != NULL)
+			{
+				prettyPrintPrivate(subTreeRoot->right, curLevel + 4);
+			}
+			if (curLevel != 0) {
+				cout << setw(curLevel) << ' ';
+			}
+			if (subTreeRoot->right != NULL)
+			{
+				cout << " /\n" << setw(curLevel) << ' ';
+			}
+			cout << subTreeRoot->data << "\n ";
+			if (subTreeRoot->left != NULL)
+			{
+				cout << setw(curLevel) << ' ' << " \\\n";// kakvo e
+				prettyPrintPrivate(subTreeRoot->left, curLevel + 4);
+			}
+		}
+	}
+	bool member(const T& x, node<T>* subTreeRoot)
+	{
+		if (subTreeRoot == NULL) return false;
+		else
+		{
+			if (subTreeRoot->data == x) return true;
+			else
+			{
+				return member(x, subTreeRoot->left) || member(x, subTreeRoot->right);
+			}
+		}
+	}
+	void deleteAll(node<T>*subTreeRoot)
+	{
+		if (subTreeRoot == NULL) return;
+		else
+		{
+			deleteAll(subTreeRoot->left);
+			deleteAll(subTreeRoot->right);
+			delete subTreeRoot;
+		}
+	}
+	void map(mapFn<T> f, node<T>*subTreeRoot)
+	{
+		if (subTreeRoot == NULL) return;
+		else
+		{
+			subTreeRoot->data = f(subTreeRoot->data);
+			map(f, subTreeRoot->left);
+			map(f, subTreeRoot->right);
+		}
+	}
+	int max(int a, int b)
+	{
+		if (a > b)
+		{
+			return a;
+		}
+		else
+		{
+			return b;
+		}
+	}
+	int findHeightPrivate(node<T>*subTreeRoot)//height=max depth
+	{
+		if (subTreeRoot == NULL)
+		{
+			return 0;
+		}
+		else
+		{
+			return max(findHeightPrivate(subTreeRoot->left), findHeightPrivate(subTreeRoot->right)) + 1;
+		}
+	}
+	bool isLeaf(node<T>*subTreeRoot, T x)
+	{
+		if (subTreeRoot == NULL)
+			return false;
+		if (subTreeRoot->data == x && subTreeRoot->left == NULL && subTreeRoot->right == NULL)
+		{
+			return true;
+		}
+		else
+		{
+			return isLeaf(subTreeRoot->left, x) || isLeaf(subTreeRoot->right, x);
+		}
+		/*
+		*/
+	}
+	
+public:
+	tree():root(nullptr){}
+	void add(T x, char*trace)
+	{
+		add(x, trace, root);
+	}
+	void print()
+	{
+		print(root);
+	}
+	void prettyPrint()
+	{
+		prettyPrintPrivate(root, 1);
+	}
+	bool member(const T& x)
+	{
+		return member(x, root);
+	}
+	~tree()
+	{
+		deleteAll(root);
+	}
+	void map(mapFn<T> f)
+	{
+		map(f, root);
+	}
+	int findHeight()
+	{
+		return findHeightPrivate(root);
+	}
+	bool isLeaf(T x)
+	{
+		return isLeaf(root,x);
+	}
+	void sumofAllLeft(node<T>* subTreeRoot,int&sum,bool flag)
+	{
+		if (subTreeRoot == NULL) return;
+		if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL&&flag)
+		{
+			sum += subTreeRoot->data;
+		}
+		else
+		{
+			sumofAllLeft(subTreeRoot->left, sum, 1);
+			sumofAllLeft(subTreeRoot->right, sum, 0);
+		}
+	}
+
+	int sumofAllLeft()
+	{
+		int sum = 0;
+		sumofAllLeft(root, sum, 1);
+		return sum;
+	}
+	int sumofAllLeft2(node<T>* subTreeRoot, int&sum, bool flag)
+	{
+		if (subTreeRoot == NULL) return 0;
+		if (subTreeRoot->left == NULL&&subTreeRoot->right == NULL&&flag)
+		{
+			return subTreeRoot->data;
+		}
+		else
+		{
+			sumofAllLeft2(subTreeRoot->left,  1)+sumofAllLeft2(subTreeRoot->right, 0);
+		}
+	}
+
+	int sumofAllLeft2()
+	{
+		cout << "sum of all left2: " << endl;
+		return sumofAllLeft2(root, 1);
+	}
+	void longestSequence(node<T>*subTreeRoot,T expected,int curlen, int &maxLen)
+	{
+		if (subTreeRoot->data == expected)
+			curlen++;
+		else
+			curlen = 1;
+
+		maxLen = max(len, maxLen);
+		longestSequence(subTreeRoot->right, subTreeRoot->data + 1, curlen, maxLen);//tova se izvurshva 1vo i maxLen stava 3
+
+		longestSequence(subTreeRoot->left, subTreeRoot->data + 1, curlen, maxLen);//tuk shte e taka: maxLen=max(1,3) i pak
+		//shte si e 3/ Zashtoto sme podali  longestSequence(subTreeRoot->left, subTreeRoot->data + 1, 3, 3); curlen stava 1 
+		//no maxLen si ostava 3	
+	}
+	int longestSequence()
+	{
+		int len = 0;
+		return longestSequence(root,root->data,0, len);
+		return len;
+	}
+	int countPrivate(node<T>* subTreeRoot)
+	{
+
+		/*int count = 0;
+		if (subTreeRoot != NULL)
+		{
+		count=count+ countPrivate(subTreeRoot->left);
+		count=count+ countPrivate(subTreeRoot->right);//ne raboti zashtoto vseki put count-a stava raven na 0
+		}
+		return count;*/
+		if (subTreeRoot == NULL)
+		{
+			return 0;
+		}
+		else {
+			if (subTreeRoot->left == NULL&& subTreeRoot->right == NULL)
+			{
+				return 1;
+			}
+			else
+			{
+				return (1 + (countPrivate(subTreeRoot->left) + countPrivate(subTreeRoot->right)));
+			}
+		}
+	}
+	int count()
+	{
+		return countPrivate(root);
+	}
+	bool isComplete(node<T>*subTreeRoot,int index,int count)
+	{
+		if (subTreeRoot == NULL)
+			return true;
+		if (index >= count) return false;
+		else
+		{
+			return isComplete(subTreeRoot->left, 2 * index + 1, count) && 
+				isComplete(subTreeRoot->right, 2 * index + 2, count);
+		}
+	}
+	bool isComplete()
+	{
+		int count = this->count();
+		return isComplete(root,0,count);
+	}
+	bool isFull(node<T>*subTreeRoot)
+	{
+		if (subTreeRoot == NULL) return true;
+		 if (subTreeRoot-> left == NULL&&subTreeRoot->right == NULL) return true;
+		 if ((subTreeRoot->left) && (subTreeRoot->right))
+		 {
+			 return isFull(subTreeRoot->left) && isFull(subTreeRoot->right);
+		 }
+		else return false;
+	}
+	bool isFull()
+	{
+		return isFull(root);
+	}
+	void addNode(node<T>* &subTreeRoot, const T& x)
+	{
+		if (subTreeRoot == NULL)
+		{
+			subTreeRoot = new node<T>(x, NULL, NULL);
+		}
+		else
+		{
+			if (x < subTreeRoot->data)
+			{
+				addNode(subTreeRoot->left, x);
+			}
+			if (x > subTreeRoot->data)
+			{
+				addNode(subTreeRoot->right, x);
+			}
+		}
+	}
+	///binary search tree
+	void addNode(T x)
+	{
+		return addNode(root, x);
+	}
+};
+
+int main()
+{
+	tree<int> t;
+	t.add(6, "");
+	t.add(9, "R");
+	t.add(10, "RR");
+	t.add(5, "RRL");
+	t.add(11, "RRR");
+	t.add(7, "L");
+	t.add(12, "LL");
+	t.prettyPrint();
+	cout << endl;
+	cout << t.sumofAllLeft() << endl;
+	tree<int> t1;
+	t1.add(1, "");
+	t1.add(2, "L");
+	t1.add(3, "R");
+	t1.add(4, "LL");
+	t1.add(5, "LR");
+	t1.add(6, "RR");
+	cout << t1.isComplete() << endl;
+	cout << t1.isFull() << endl;
+	tree<int> bt;
+	bt.addNode(10);
+	bt.addNode(20);
+	bt.addNode(9);
+	bt.prettyPrint();
+
+}
