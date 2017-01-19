@@ -283,3 +283,111 @@ int main()
 
    //return 0;
 }
+
+
+
+
+
+
+
+
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <map>
+#include <assert.h>
+using namespace std;
+void print(stack<int> s)
+{
+    while(!s.empty())
+    {
+        cout<<s.top()<<" ";
+        s.pop();
+    }
+    cout<<endl;
+}
+int getMax(stack<int> s)
+{
+	stack<int> s2;
+	int max = s.top();
+	while (!s.empty())
+	{
+		if (s.top() > max)
+		{
+			max = s.top();
+		}
+		else
+		{
+			s2.push(s.top());
+			s.pop();
+		}
+	}
+	while (!s2.empty())
+	{
+		s.push(s2.top());
+		s2.pop();
+	}
+	return max;
+}
+void sortRecursion(stack<int> s)
+{
+    stack<int> s1
+    sortRecursion(s,s1,s.top());
+}
+void removeElem(stack<int> s,int x)
+{
+    while(!s.empty())
+        
+    {
+        if(s.top()==x) s.pop()
+    }
+}
+void sortRecursion(stack<int> s,stack<int> s1,int x)
+{
+
+    if (s.empty())
+	{
+		cout<<"empty ";
+	}
+	int temp=getMax(s);
+	s1.push(temp);
+	
+	
+}
+
+void sort(stack<int> s)
+{
+    stack<int> newstack;
+	if (s.empty())
+	{
+		cout<<"empty ";
+	}
+	int x = s.top();
+	s.pop();
+	newstack.push(x);
+	while (!s.empty())
+	{
+		int temp = s.top();
+		s.pop();
+		while (!newstack.empty()&&temp>newstack.top())
+		{
+			s.push(newstack.top());
+			newstack.pop();
+		}
+		newstack.push(temp);
+	}
+	print(newstack);
+}
+
+int main()
+{
+    stack<int> s;
+    s.push(1);
+    s.push(2);
+    s.push(3);
+    s.push(4);
+    print(s);
+    sort(s);
+   //return 0;
+}
+
