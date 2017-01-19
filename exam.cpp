@@ -208,18 +208,18 @@ public:
     void findError(node<T>* ptr,T rootData)
     {
         assert(ptr!=NULL);
-        if(ptr->left->data<rootData&&ptr->left!=NULL)
+        if(ptr->left!=NULL&&ptr->left->data<rootData)
         {
-            cout<<-1;
+
             findError(ptr->left,ptr->left->data);
         }
-        if(ptr->right->data>rootData&&ptr->right!=NULL)
+        if(ptr->right!=NULL&&ptr->right->data>rootData)
         {
-            findError(ptr->right,ptr->right->data&&ptr->right!=NULL);
+            findError(ptr->right,ptr->right->data);
         }
 
 
-        if(rootData<ptr->left->data)
+        if(ptr->left!=NULL&&rootData<ptr->left->data)
         {
             swap(rootData,ptr->left->data);
             if(ptr->left!=NULL)
@@ -229,9 +229,9 @@ public:
 
         }
 
-        if(rootData>ptr->right->data)
+        if(ptr->right!=NULL&&rootData>ptr->right->data)
         {
-            cout<<-1;
+
             swap(rootData,ptr->right->data);
             if(ptr->right!=NULL)
             {
@@ -281,5 +281,5 @@ int main()
     t.findError();
     t.print();
 
-   // return 0;
+   //return 0;
 }
