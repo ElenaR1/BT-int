@@ -527,6 +527,18 @@ public:
 		}
 		return newList;
 	}
+	void printReverse(node<T>* ptr)
+	{
+		if (ptr != NULL)
+		{
+			printReverse(ptr->next);
+			cout << ptr->data;
+		}
+	}
+	void printReverse()
+	{
+		printReverse(head);
+	}
 	void reverse()
 	{
 		curr = head;
@@ -551,6 +563,7 @@ int main()
 	ll.addEnd(3);
 	ll.addEnd(4);
 	ll.print();
+	ll.printReverse();
 	cout << endl;
 	ll.reverse();
 	ll.print();
