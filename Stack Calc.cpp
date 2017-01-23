@@ -227,7 +227,6 @@ int main()
 
 
 
-//new
 #include <iostream>
 #include <string.h>
 #include <string>
@@ -394,60 +393,6 @@ public:
 		}
 		pop();
 	}
-	/*void calculate(string a)
-	{
-		int n;
-		int result;
-		int len = a.size();
-		for (size_t i = 0; i < len; i++)
-		{
-			if (isNumber(a[i]))
-			{
-				char c = a[i];
-				n = c - '0';
-				push(n);
-
-			}
-			if (a[i] == '+')
-			{
-				int x = top();//x=3
-				pop();
-				int y = top();//y=6
-				pop();
-				result = x + y;//8
-				push(result);//vkarvame v steka 9
-			}
-			if (a[i] == '-')
-			{
-				int x = top();//x=3
-				pop();
-				int y = top();//y=6
-				pop();
-				result = y-x;//8
-				push(result);//vkarvame v steka 9
-			}
-			if (a[i] == '*')
-			{
-				int x = top();//x=3
-				pop();
-				int y = top();//y=6
-				pop();
-				result = x * y;//8
-				push(result);//vkarvame v steka 9
-			}
-			if (a[i] == '/')
-			{
-				int x = top();//x=3
-				pop();
-				int y = top();//y=6
-				pop();
-				result = y/x;
-				push(result);//vkarvame v steka 9
-			}
-		}
-		cout << "result of expression is  " << top();
-	}*/
-	
 };
 calcStack<int>num;
 calcStack<char>op;
@@ -475,6 +420,7 @@ int getSize(string exp)
 void calculate(string exp)
 {
 	int size = getSize(exp);
+	int index = 0;
 	while (index < size)
 	{
 		if (exp[index]==' ')
@@ -484,59 +430,128 @@ void calculate(string exp)
 		if (exp[index] == '(')
 		{
 			op.push(exp[index]);
+			index++;
 		}
-		if (IsOperator(exp[index]) && !HasHigherPrecedence(num.top(), exp[index]))//&& num.top() != '('
+		if (IsOperator(exp[index]) && op.empty())//&& num.top() != '('
 		{
 			op.push(exp[index]);
+			index++;
 		}
-		if (IsOperator(exp[index]) && HasHigherPrecedence(num.top(), exp[index]))//&& num.top() != '('
+		if (IsOperator(exp[index]) && op.top()=='(')//&& num.top() != '('
+		{
+			op.push(exp[index]);
+			index++;
+		}
+		if (IsOperator(exp[index]) && !HasHigherPrecedence(op.top(), exp[index]))//&& num.top() != '('
+		{
+			op.push(exp[index]);
+			index++;
+		}
+		if (IsOperator(exp[index]) && HasHigherPrecedence(op.top(), exp[index]))//&& num.top() != '('
 		{
 			char operation = op.top();
 			op.pop();
-
+			op.push(exp[index]);
+			int num1 = num.top();
+			num.pop();
+			int num2 = num.top();
+			num.pop();
+			int result;
+			if (operation == '+')
+			{
+				result = num1 + num2;
+				num.push(result);
+			}
+			if (operation == '*')
+			{
+				result = num1 * num2;
+				num.push(result);
+			}
+			if (operation == '-')
+			{
+				result = num2 - num1;
+				num.push(result);
+			}
+			if (operation == '/')
+			{
+				result = num2 / num1;
+				num.push(result);
+			}
+			index++;
 		}
-	}
-}
-string InfixToPostfix(string expression)
-{
-	calcStack <char> S;
-	string postfix = "";
-	for (int i = 0; i < expression.length(); i++)
-	{
-		if (Flag(expression[i])) {
-			continue;
-		}
-		// If character is operator, pop two elements from stack, perform operation and push the result back.
-		else if (IsOperator(expression[i]))
+		if (exp[index] == ')')
 		{
-			while (!S.empty() && S.top() != '(' && HasHigherPrecedence(S.top(), expression[i])) {
-				postfix += S.top();
-				S.pop();
+			while (!op.empty() && op.top() != '(')
+			{
+				char operation = op.top();
+				op.pop();
+				int num1 = num.top();
+				num.pop();
+				int num2 = num.top();
+				num.pop();
+				int result;
+				if (operation == '+')
+				{
+					result = num1 + num2;
+					num.push(result);
+				}
+				if (operation == '*')
+				{
+					result = num1 * num2;
+					num.push(result);
+				}
+				if (operation == '-')
+				{
+					result = num2 - num1;
+					num.push(result);
+				}
+				if (operation == '/')
+				{
+					result = num2 / num1;
+					num.push(result);
+				}
 			}
-			S.push(expression[i]);
+			index++;
+			op.pop();
 		}
-		else if (IsOperand(expression[i])) {
-			postfix += expression[i];
-		}
-		else if (expression[i] == '(') {
-			S.push(expression[i]);
-		}
-		else if (expression[i] == ')') {
-			while (!S.empty() && S.top() != '(') {
-				postfix += S.top();
-				S.pop();
-			}
-			S.pop();
+		if (IsOperand(exp[index]))
+		{
+			handleNumber(index, exp);//index-ut se promenq v handleNumber
 		}
 	}
-
-	while (!S.empty()) {
-		postfix += S.top();
-		S.pop();
+	while (!op.empty())
+	{
+		char operation = op.top();
+		op.pop();
+		int num1 = num.top();
+		num.pop();
+		int num2 = num.top();
+		num.pop();
+		int result;
+		if (operation == '+')
+		{
+			result = num1 + num2;
+			num.push(result);
+		}
+		if (operation == '*')
+		{
+			result = num1 * num2;
+			num.push(result);
+		}
+		if (operation == '-')
+		{
+			result = num2 - num1;
+			num.push(result);
+		}
+		if (operation == '/')
+		{
+			result = num2 / num1;
+			num.push(result);
+		}
 	}
-
-	return postfix;
+	cout << "the result is: " << num.top() << endl;
 }
+
 
 int main()
 {
@@ -544,13 +559,22 @@ int main()
 	//int b = (int)(a - 48);
 	//cout << b;
 
-	index = 0;
-	handleNumber(index, "58+10");
-	cout << num.top() << endl;
-	string x = "dog:cat";
-	int pos = x.find(":");
+	//index = 0;
+	//handleNumber(index, "58+10");
+	//cout << num.top() << endl;//58
+	/*string x = "34+10";
+	int pos = x.find("+");
 	string sub = x.substr(pos + 1);
-	cout << sub;
+	handleNumber(index, sub);
+	int n= num.top();
+	cout << n << endl;
+	cout << "index: " << index;*/
 
+	//string exp = "34*10-20/5";
+	//string exp = "10-5*5";
+	string exp = "((10+5)*2)/3";
+	calculate(exp);
+
+	
 	return 0;
 }
