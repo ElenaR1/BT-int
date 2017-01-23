@@ -18,7 +18,7 @@ bool isNumber(char&a)
 }
 bool IsOperand(char ch)
 {
-	if (ch >= '0' && ch <= '9' || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
+	if (ch >= '0' && ch <= '9')
 	{
 		return true;
 	}
@@ -83,6 +83,12 @@ int GetOperatorWeight(char op)
 		break;
 	case '^':
 		weight = 3;
+		break;
+	case 'r':
+	case 's':
+	case 'c':
+	case 'l':
+		weight = 4;
 		break;
 	}
 	return weight;
@@ -189,13 +195,13 @@ public:
 	{
 		return sqrt(num);
 	}
-	void handleNumber(int&i, string exp)
+	void handleNumber(int&i, string exp)//moje bi da go
 	{
 		int value = 0;
 		while (isNumber(exp[i]))
 		{
 			value *= 10;
-			value += (int)(exp[i] - 48);
+			value += (float)(exp[i] - 48);
 			i++;
 		}
 		push(value);
@@ -227,6 +233,11 @@ public:
 				op.push(exp[index]);
 				index++;
 			}
+			if (IsFunction(exp[index]) && !HasHigherPrecedence(op.top(), exp[index]))//&& num.top() != '('
+			{
+				op.push(exp[index]);
+				index++;
+			}
 			if (IsOperator(exp[index]) && op.empty())
 			{
 				op.push(exp[index]);
@@ -247,44 +258,8 @@ public:
 				char operation = op.top();
 				op.pop();
 				op.push(exp[index]);
-				int num1 = top();
-				pop();
-				int num2 = top();
-				pop();
-				int result;
-				if (operation == '+')
+				if (IsOperator(operation))
 				{
-					result = num1 + num2;
-					push(result);
-				}
-				if (operation == '*')
-				{
-					result = num1 * num2;
-					push(result);
-				}
-				if (operation == '-')
-				{
-					result = num2 - num1;
-					push(result);
-				}
-				if (operation == '/')
-				{
-					result = num2 / num1;
-					push(result);
-				}
-				if (operation == '^')
-				{
-					result = exponent(num2,num1);
-					push(result);
-				}
-				index++;
-			}
-			if (exp[index] == ')')
-			{
-				while (!op.empty() && op.top() != '(')
-				{
-					char operation = op.top();
-					op.pop();
 					int num1 = top();
 					pop();
 					int num2 = top();
@@ -316,6 +291,70 @@ public:
 						push(result);
 					}
 				}
+				if (IsFunction(operation))
+				{
+					int num1 = top();
+					pop();
+					int result;
+					if (operation == 'r')
+					{
+						result = squareRoot(num1);
+						push(result);
+					}
+				}
+				index++;
+			}
+			if (exp[index] == ')')
+			{
+				while (!op.empty() && op.top() != '(')
+				{
+					char operation = op.top();
+					op.pop();
+					if (IsOperator(operation))
+					{
+						int num1 = top();
+						pop();
+						int num2 = top();
+						pop();
+						int result;
+						if (operation == '+')
+						{
+							result = num1 + num2;
+							push(result);
+						}
+						if (operation == '*')
+						{
+							result = num1 * num2;
+							push(result);
+						}
+						if (operation == '-')
+						{
+							result = num2 - num1;
+							push(result);
+						}
+						if (operation == '/')
+						{
+							result = num2 / num1;
+							push(result);
+						}
+						if (operation == '^')
+						{
+							result = exponent(num2, num1);
+							push(result);
+						}
+					}
+					if (IsFunction(operation))
+					{
+						int num1 = top();
+						pop();
+						T result;
+						if (operation == 'r')
+						{
+							result = squareRoot(num1);
+							push(result);
+						}
+					}
+				}
 				index++;
 				op.pop();
 			}
@@ -328,35 +367,49 @@ public:
 		{
 			char operation = op.top();
 			op.pop();
-			int num1 = top();
-			pop();
-			int num2 = top();
-			pop();
-			int result;
-			if (operation == '+')
+			if (IsOperator(operation))
 			{
-				result = num1 + num2;
-				push(result);
+				int num1 = top();
+				pop();
+				int num2 = top();
+				pop();
+				int result;
+				if (operation == '+')
+				{
+					result = num1 + num2;
+					push(result);
+				}
+				if (operation == '*')
+				{
+					result = num1 * num2;
+					push(result);
+				}
+				if (operation == '-')
+				{
+					result = num2 - num1;
+					push(result);
+				}
+				if (operation == '/')
+				{
+					result = num2 / num1;
+					push(result);
+				}
+				if (operation == '^')
+				{
+					result = exponent(num2, num1);
+					push(result);
+				}
 			}
-			if (operation == '*')
+			if (IsFunction(operation))
 			{
-				result = num1 * num2;
-				push(result);
-			}
-			if (operation == '-')
-			{
-				result = num2 - num1;
-				push(result);
-			}
-			if (operation == '/')
-			{
-				result = num2 / num1;
-				push(result);
-			}
-			if (operation == '^')
-			{
-				result = exponent(num2, num1);
-				push(result);
+				int num1 = top();
+				pop();
+				T result;
+				if (operation == 'r')
+				{
+					result = squareRoot(num1);
+					push(result);
+				}
 			}
 		}
 		cout << "the result is: " << top() << endl;
@@ -384,8 +437,13 @@ int main()
 	//string exp = "34*10-20/5";
 	//string exp = "10-5*5";
 	//string exp = "((10+5)*2)/3";
-	string exp = "(17+3)^2";
-	//string exp = "sqrt4+5";
+	//string exp = "(17+3)^2";
+	//string exp = "r(90+10)+5";
+	//string exp = "r(r(4*4))+5";
+	//string exp = "r(5+r(16))";
+	//string exp = "20/r(110-10)";
+	//string exp = "5^r(8/2)";
+	string exp = "r(10)";
 	cout << "You can choose between theese operation: + , - , * , / ." << endl;
 	cout<<"For the exponent of a number write '^'." << endl;
 	cout << "For the square root of a number write 'r'." << endl;
@@ -394,7 +452,9 @@ int main()
 	cout << "For the log of a number write 'l'." << endl;
 	//string exp;
 	//cin >> exp;
-	calcStack<int> s;
+	int a = 10;
+	cout <<sqrt(a)<< endl;
+	calcStack<float> s;
 	s.calculate(exp);
 	cout << s.top() << endl;
 	
