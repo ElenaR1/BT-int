@@ -1,4 +1,4 @@
-//Last Version
+//Предпоследна версия
 #include <iostream>
 #include <string.h>
 #include <math.h>
@@ -710,6 +710,7 @@ int main()
 
 
 
+//LAST VERSION
 #include <iostream>
 #include <string.h>
 #include <math.h>
@@ -747,7 +748,7 @@ bool IsOperator(char C)
 }
 bool IsFunction(char C)
 {
-	if (C == 'r' || C == 's' || C == 'c' || C == 'l'||C=='n' ) {
+	if (C == 'r' || C == 's' || C == 'c' || C == 'l' || C == 'n') {
 		return true;
 	}
 	return false;
@@ -902,7 +903,7 @@ public:
 		}
 		pop();
 	}
-	T exponent(T num,T k)
+	T exponent(T num, T k)
 	{
 		return pow(num, k);
 	}
@@ -937,7 +938,7 @@ public:
 		}
 		push(value);
 	}
-	
+
 	void calculate(string exp)
 	{
 		calcStack<char>op;
@@ -950,7 +951,7 @@ public:
 				index++;
 				continue;
 			}
-			if (exp[index] == ' ' && op.top()=='-')
+			if (exp[index] == ' ' && op.top() == '-')
 			{
 				op.top() = 'n';
 				index++;
@@ -965,7 +966,7 @@ public:
 				op.push(exp[index]);
 				index++;
 			}
-			if (IsFunction(exp[index]) && op.top() == '(')//&& num.top() != '('
+			if (IsFunction(exp[index]) && op.top() == '(')
 			{
 				op.push(exp[index]);
 				index++;
@@ -975,6 +976,7 @@ public:
 				op.push(exp[index]);
 				index++;
 			}
+			
 			if (IsOperator(exp[index]) && op.empty())
 			{
 				op.push(exp[index]);
@@ -993,72 +995,209 @@ public:
 			if (IsOperator(exp[index]) && HasHigherPrecedence(op.top(), exp[index]))//&& num.top() != '('
 			{
 				char operation = op.top();
-				op.pop();
+				op.pop();			
+				if (op.empty()||!HasHigherPrecedence(op.top(), exp[index]))
+				{
+					if (IsOperator(operation))
+					{
+						T num1 = top();
+						pop();
+						T num2 = top();
+						pop();
+						T result;
+						if (operation == '+')
+						{
+							result = num1 + num2;
+							push(result);
+						}
+						if (operation == '*')
+						{
+							result = num1 * num2;
+							push(result);
+						}
+						if (operation == '-')
+						{
+							result = num2 - num1;
+							push(result);
+						}
+						if (operation == '/')
+						{
+							result = num2 / num1;
+							push(result);
+						}
+						if (operation == '^')
+						{
+							result = exponent(num2, num1);
+							push(result);
+						}
+					}
+					if (IsFunction(operation))
+					{
+						T num1 = top();
+						pop();
+						T result;
+						if (operation == 'r')
+						{
+							result = squareRoot(num1);
+							push(result);
+						}
+						if (operation == 'l')
+						{
+							result = naturalLogarithm(num1);
+							push(result);
+						}
+						if (operation == 's')
+						{
+							result = sineOfDegrees(num1);
+							push(result);
+						}
+						if (operation == 'c')
+						{
+							result = cosineOfDegrees(num1);
+							push(result);
+						}
+						if (operation == 'n')
+						{
+							result = makeNegative(num1);
+							push(result);
+						}
+					}
+				}
+				if (!op.empty()&&HasHigherPrecedence(op.top(), exp[index]))//e/g "r(9)*c(180)+5";
+				{
+					if (IsOperator(operation))
+					{
+						T num1 = top();
+						pop();
+						T num2 = top();
+						pop();
+						T result;
+						if (operation == '+')
+						{
+							result = num1 + num2;
+							push(result);
+						}
+						if (operation == '*')
+						{
+							result = num1 * num2;
+							push(result);
+						}
+						if (operation == '-')
+						{
+							result = num2 - num1;
+							push(result);
+						}
+						if (operation == '/')
+						{
+							result = num2 / num1;
+							push(result);
+						}
+						if (operation == '^')
+						{
+							result = exponent(num2, num1);
+							push(result);
+						}
+					}
+					if (IsFunction(operation))
+					{
+						T num1 = top();
+						pop();
+						T result;
+						if (operation == 'r')
+						{
+							result = squareRoot(num1);
+							push(result);
+						}
+						if (operation == 'l')
+						{
+							result = naturalLogarithm(num1);
+							push(result);
+						}
+						if (operation == 's')
+						{
+							result = sineOfDegrees(num1);
+							push(result);
+						}
+						if (operation == 'c')
+						{
+							result = cosineOfDegrees(num1);
+							push(result);
+						}
+						if (operation == 'n')
+						{
+							result = makeNegative(num1);
+							push(result);
+						}
+					}
+					char operation2 = op.top();
+					op.pop();
+					if (IsOperator(operation2))
+					{
+						T num1 = top();
+						pop();
+						T num2 = top();
+						pop();
+						T result;
+						if (operation2 == '+')
+						{
+							result = num1 + num2;
+							push(result);
+						}
+						if (operation2 == '*')
+						{
+							result = num1 * num2;
+							push(result);
+						}
+						if (operation2 == '-')
+						{
+							result = num2 - num1;
+							push(result);
+						}
+						if (operation2 == '/')
+						{
+							result = num2 / num1;
+							push(result);
+						}
+						if (operation == '^')
+						{
+							result = exponent(num2, num1);
+							push(result);
+						}
+					}
+					if (IsFunction(operation2))
+					{
+						T num1 = top();
+						pop();
+						T result;
+						if (operation2 == 'r')
+						{
+							result = squareRoot(num1);
+							push(result);
+						}
+						if (operation2 == 'l')
+						{
+							result = naturalLogarithm(num1);
+							push(result);
+						}
+						if (operation2 == 's')
+						{
+							result = sineOfDegrees(num1);
+							push(result);
+						}
+						if (operation2 == 'c')
+						{
+							result = cosineOfDegrees(num1);
+							push(result);
+						}
+						if (operation2 == 'n')
+						{
+							result = makeNegative(num1);
+							push(result);
+						}
+					}
+					
+				}
 				op.push(exp[index]);
-				if (IsOperator(operation))
-				{
-					T num1 = top();
-					pop();
-					T num2 = top();
-					pop();
-					T result;
-					if (operation == '+')
-					{
-						result = num1 + num2;
-						push(result);
-					}
-					if (operation == '*')
-					{
-						result = num1 * num2;
-						push(result);
-					}
-					if (operation == '-')
-					{
-						result = num2 - num1;
-						push(result);
-					}
-					if (operation == '/')
-					{
-						result = num2 / num1;
-						push(result);
-					}
-					if (operation == '^')
-					{
-						result = exponent(num2, num1);
-						push(result);
-					}
-				}
-				if (IsFunction(operation))
-				{
-					T num1 = top();
-					pop();
-					T result;
-					if (operation == 'r')
-					{
-						result = squareRoot(num1);
-						push(result);
-					}
-					if (operation == 'l')
-					{
-						result = naturalLogarithm(num1);
-						push(result);
-					}
-					if (operation == 's')
-					{
-						result = sineOfDegrees(num1);
-						push(result);
-					}
-					if (operation == 'c')
-					{
-						result = cosineOfDegrees(num1);
-						push(result);
-					}
-					if (operation == 'n')
-					{
-						result = makeNegative(num1);
-						push(result);
-					}
-				}
 				index++;
 			}
 			if (exp[index] == ')')
@@ -1228,49 +1367,56 @@ int main()
 	//string exp = "l(r(100))";
 	//string exp = "r(10)+2";
 	//string exp = "l(s(180)+c(0)+c(0))*3";
-	string exp = "2*r(9)+4";//ne raboti
+	//string exp = "(- 2)*r(9)-4";
+	//string exp = "(- 2)+3*4";
+	string exp = "(- 2)^3";
+	//string exp = "r(9)*c(180)+5";
+	//string exp = "s(r(4*4-7))";
 	cout << "You can choose between theese operations: + , - , * , / ." << endl;
-	cout<<"For the exponent of a number choose '^'." << endl;
+	cout << "For the exponent of a number choose '^'." << endl;
 	cout << "For a negative number write it like this: if the number is 'x' you should write (- x)." << endl;
 	cout << "For the square root of a number choose 'r'." << endl;
 	cout << "For the sin of a number choose 's'." << endl;
 	cout << "For the cos of a number choose 'c'." << endl;
 	cout << "For the log of a number choose 'l'." << endl;
-    //string exp;
-	//cout << "Write the expression that you want to be calculated: " << endl;
-    //cin >> exp;
+	//string exp;
+	cout << "Write the expression that you want to be calculated: " << endl;
+	//cin >> exp;
 	calcStack<float> s;
 	s.calculate(exp);
-	/*string a;
+/*	string a;
 	cout << "If you want to see the result write '='." << endl;
 	cout << "If you need help write 'help'."<<endl;
 	cout << "If you want to quit the program write 'quit'." << endl;
 	cout << "If you want to delete everything up to now write 'clear''." << endl;
 	while(cin>>a){
-		//cin >> a;
-		if (a == "=")
-		{
-			cout << s.top() << endl;
-		}
-		if (a == "clear")
-		{
-			s.clear();
-		}
-		if (a == "show")
-		{
-			s.clear();
-		}
-		if (a == "help")
-		{
-			cout << "Look carefully if you have made a mistake" << endl;
-		}
-		if (a == "quit")
-		{
-			exit(0);
-		}
+	if (a == "=")
+	{
+	cout << s.top() << endl;
 	}
+	if (a == "clear")
+	{
+	s.clear();
+	}
+	if (a == "show")
+	{
+	s.clear();
+	}
+	if (a == "help")
+	{
+	cout << "Look carefully if you have made a mistake" << endl;
+	}
+	if (a == "quit")
+	{
+	exit(0);
+	}
+	}
+	
 	*/
-	
-	
+
 	//return 0;
 }
+
+
+
+
