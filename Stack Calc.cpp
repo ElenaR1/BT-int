@@ -1,4 +1,4 @@
-//Предпоследна версия
+//Предпредпоследна версия
 #include <iostream>
 #include <string.h>
 #include <math.h>
@@ -710,7 +710,7 @@ int main()
 
 
 
-//LAST VERSION
+//Предпоследна VERSION
 #include <iostream>
 #include <string.h>
 #include <math.h>
