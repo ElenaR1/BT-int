@@ -84,10 +84,16 @@
 
 
 (define (remove-ith-col m n)
-	  (if (> n (length (car l))) (display "There isn't such a column")
+	  (if (> n (length (car m))) (display "There isn't such a column")
 	   (if (null? m) '()
 	     (cons (list-rem-matrix n (car m)) (remove-ith-col (cdr m) n)))))
+;;ili s map
+(define (remove-ith-col m n)
+	  (if (> n (length (car m))) (display "There isn't such a column")
+	   (if (null? m) '()
+	     (map (lambda (x) (list-rem-matrix n x)) m))))
 	     
+	    	     
 	     
 
 ;5 zad
