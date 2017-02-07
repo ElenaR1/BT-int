@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <cassert>
 #include <set>
+#include <stack>
 #include <string>
 #include <queue>
 
@@ -108,6 +109,97 @@ string stringOfLabels(int start, int end, const Graph<int, char>& g, set<int>& v
 		}
 	}
 }
+string getPathIter1(int start, int end, const Graph<int, char> g)
+{
+
+	//key:child, value:parent>
+	map<int, int> history;
+	stack<int> s;
+
+	s.push(start);
+	history[start] = start;
+
+
+	while (!s.empty() && s.top() != end)
+	{
+		int v = s.top();
+		s.pop();
+
+		for (const pair<int, char>& edge : g.edgesFrom(v))
+		{
+			const int &neigh = edge.first;
+
+			if (history.count(neigh) == 0)
+			{
+				s.push(neigh);
+				history[neigh] = v;
+			}
+
+		}
+
+	}
+
+	if (s.empty())
+		return "";
+
+	string result;
+
+	int current = end;
+	while (current != start)
+	{
+		int &parent = history[current];
+
+		result += g.getLabel(parent, current);
+		current = parent;
+	}
+
+	return result;
+
+}
+
+string getPathIter2(int start, int end, const Graph<int, char> g)
+{
+
+	set<int> visited;
+	stack<pair<int, string>> s;
+
+	s.push(pair<int, string>(start, ""));
+	visited.insert(start);
+
+
+	while (!s.empty() && s.top().first != end)
+	{
+		//vertex and history
+		pair<int, string> vh = s.top();
+		s.pop();
+
+		int &v = vh.first;
+		string &hist = vh.second;
+
+		for (const pair<int, char>& edge : g.edgesFrom(v))
+		{
+			const int &neigh = edge.first;
+			const char &label = edge.second;
+
+			if (visited.count(neigh) == 0)
+			{
+				s.push(pair<int, string>(neigh, hist + label));
+				visited.insert(neigh);
+			}
+
+		}
+
+	}
+
+	if (s.empty())
+		return "";
+
+	return s.top().second;
+
+}
+
+
+
 string stringOfLabelsPub(int start, int end, const Graph<int, char> g)
 {
 	set<int> visited;
@@ -157,6 +249,37 @@ bool hasPathBFS(int start, int end, const Graph<int, char> g)
 
 	return !q.empty();
 }
+bool hasPathIter(int start, int end, const Graph<int, char> g)
+{
+
+	set<int> visited;
+	stack<int> s;
+
+	s.push(start);
+	visited.insert(start);
+
+
+	while (!s.empty() && s.top() != end)
+	{
+		int v = s.top();
+		s.pop();
+
+		for (const pair<int, char>& edge : g.edgesFrom(v))
+		{
+			const int &neigh = edge.first;
+
+			if (visited.count(neigh) == 0)
+			{
+				s.push(neigh);
+				visited.insert(neigh);
+			}
+
+		}
+
+	}
+
+	return !s.empty();
+}
 
 void testGraph()
 {
@@ -179,13 +302,28 @@ void testGraph()
 	cout << endl;
 	string res = stringOfLabelsPub(2, 3, g);
 	cerr << "str = " << res << endl;
+	string res2;
+	res2 = getPathIter1(2, 3, g);
+	cerr << "str = " << res2 << endl;
+	string res4;
+	res4 = getPathIter2(2, 3, g);
+	cerr << "str = " << res4 << endl;
+	cout << "..........." << endl;
 	string res1 = stringOfLabelsPub(2, 4, g);
 	cerr << "str = " << res1 << endl;
+	string res3;
+	res3 = getPathIter1(2, 4, g);
+	cerr << "str = " << res3 << endl;
 
 	assert(hasPath(0, "abc", g));
 	assert(!hasPath(1, "abc", g));
 	assert(hasPath(1, "bca", g));
 	assert(hasPath(0, "abcabcabcabc", g));
+
+	assert(hasPathIter(2, 4, g));
+	assert(!hasPathIter(3, 1, g));
+	assert(hasPathIter(1, 1, g));
+	assert(!hasPathIter(4, 2, g));
 
 	assert(hasPathBFS(2, 4, g));
 	assert(!hasPathBFS(3, 1, g));
