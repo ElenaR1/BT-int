@@ -31,21 +31,32 @@ public:
 		addVertex(inV);
 
 		edges[outV].push_back(pair<VT, LT>(inV, lbl));//edges[outV] vrushta list-a suotvetstvasht na vurha outV
-		//i nai-otzad mu dobavq tazi dvoika
+													  //i nai-otzad mu dobavq tazi dvoika
 	}
 	list<pair<VT, LT>> edgesFrom(const VT& out) const
 	{
 		return edges.at(out);//shte vurne value-to koeto otgovarq na vuzela out. Tpva value e spisuk ot dvoika ot susedite mu
-		//i labelite 
+							 //i labelite 
+		// edges[out]; 
 	}
-
+	void printPair(pair<VT, LT> p)
+	{
+		cout << p.first << " " << p.second << endl;
+	}
+	void printList(list<pair<VT, LT>> l)
+	{
+		for (list<pair<VT, LT>>::iterator it = l.begin(); it != l.end(); ++it)
+		{
+			printPair(*it);
+		}
+	}
 	LT getLabel(const VT&out, const VT&in)const
 	{
 		assert(edges.count(out) != 0);
 		assert(edges.count(in) != 0);
 
 		for (const pair<int, char>& edge : edgesFrom(out))//minava po rebrata izlizshti ot vuzela out, a tova predstavlqva spisuk
-			//ot dvoiki ot susedite mu i labelite 
+														  //ot dvoiki ot susedite mu i labelite 
 		{
 			if (in == edge.first)
 			{
@@ -58,13 +69,25 @@ public:
 		//LT dummy;
 		//return dummy;
 	}
-
+	bool hasCycle()
+	{
+		cout << "has cycle: ";
+		for (const pair<VT, list<pair<VT, LT>>>& mapEl : edges)
+		{
+			for (const pair<VT, LT> &edge : mapEl.second) 
+			{
+				if (hasPathBFS(edge.first, mapEl.first, *this))
+					return true;
+			}
+		}
+		return false;
+	}
 };
 
 template <class VT, class LT>
 void Graph<VT, LT>::toDotty(ostream &out) const
 {
-	
+
 	out << "digraph G\n{\n";
 
 	for (const pair<VT, list<pair<VT, LT>>>& mapEl : edges)
@@ -249,6 +272,9 @@ bool hasPathBFS(int start, int end, const Graph<int, char> g)
 
 	return !q.empty();
 }
+
+
+
 bool hasPathIter(int start, int end, const Graph<int, char> g)
 {
 
@@ -279,8 +305,8 @@ bool hasPathIter(int start, int end, const Graph<int, char> g)
 	}
 
 	return !s.empty();
-}
 
+}
 void testGraph()
 {
 	Graph<int, char> g;
@@ -292,6 +318,25 @@ void testGraph()
 	g.addEdge(1, 3, 'b');
 	g.addEdge(4, 3, 'x');
 	g.addEdge(3, 4, 'z');
+
+	Graph<int, char> g1;
+	g1.addEdge(1, 2, 'a');
+	g1.addEdge(2, 3, 'b');
+	g1.addEdge(3, 4, 'c');
+	g1.toDotty(cout);
+
+	Graph<int, char> g2;
+	g2.addEdge(1, 2, 'a');
+	g2.addEdge(2, 4, 'b');
+	g2.addEdge(3, 1, 'c');
+
+
+	g.printList(g.edgesFrom(1));
+	cout << endl;
+	cout << g.getLabel(3, 4) << endl;
+	cout << g.hasCycle() << endl;
+	cout << g1.hasCycle() << endl;
+	cout << g2.hasCycle() << endl;
 
 	assert(g.getLabel(0, 1) == 'a');
 	assert(g.getLabel(3, 4) == 'z');
@@ -326,6 +371,7 @@ void testGraph()
 	assert(!hasPathIter(4, 2, g));
 
 	assert(hasPathBFS(2, 4, g));
+	//assert(hasPathBFSWithSameElements(2, 4, g));
 	assert(!hasPathBFS(3, 1, g));
 	assert(hasPathBFS(1, 1, g));
 	assert(!hasPathBFS(4, 2, g));
