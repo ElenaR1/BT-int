@@ -91,6 +91,13 @@ void Graph<VT, LT>::toDotty(ostream &out) const
 	out << "digraph G\n{\n";
 
 	for (const pair<VT, list<pair<VT, LT>>>& mapEl : edges)
+//In a map, the key values are generally used to sort and uniquely identify the elements, 
+//while the mapped values store the content associated to this key. The types of key and mapped value may differ, 
+//and are grouped together in member type value_type, which is a pair type combining both:        
+
+ 
+typedef pair<const Key, T> value_type;
+
 	{
 		out << "\t" << mapEl.first << ";\n";
 
