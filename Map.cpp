@@ -4,6 +4,7 @@
 #include <string>
 #include <assert.h>
 #include <map>
+#include <unordered_map>
 
 
 using namespace std;
@@ -51,8 +52,6 @@ int maxDistance(int*arr, int n)
 }
 // C++ program to check if a string can be converted to
 // a string that has repeated substrings of length k.
-#include<bits/stdc++.h>
-using namespace std;
 
 // Returns true if str can be coverted to a string
 // with k repeated substrings after replacing k
@@ -114,6 +113,7 @@ int main()
 	it = mapp.find(3);
 	cout << "value found: " << it->second << endl;
 	mapp.erase(it);
+	//mapp.erase(3);
 	for (it = mapp.begin(); it != mapp.end(); ++it)
 	{
 		cout << it->first << " " << it->second << endl;
