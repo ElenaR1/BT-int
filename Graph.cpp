@@ -37,7 +37,7 @@ public:
 	{
 		return edges.at(out);//shte vurne value-to koeto otgovarq na vuzela out. Tpva value e spisuk ot dvoika ot susedite mu
 							 //i labelite 
-		// edges[out]; 
+							 // edges[out]; 
 	}
 	void printPair(pair<VT, LT> p)
 	{
@@ -74,7 +74,7 @@ public:
 		cout << "has cycle: ";
 		for (const pair<VT, list<pair<VT, LT>>>& mapEl : edges)
 		{
-			for (const pair<VT, LT> &edge : mapEl.second) 
+			for (const pair<VT, LT> &edge : mapEl.second)
 			{
 				if (hasPathBFS(edge.first, mapEl.first, *this))
 					return true;
@@ -91,12 +91,10 @@ void Graph<VT, LT>::toDotty(ostream &out) const
 	out << "digraph G\n{\n";
 
 	for (const pair<VT, list<pair<VT, LT>>>& mapEl : edges)
-//In a map, the key values are generally used to sort and uniquely identify the elements, 
-//while the mapped values store the content associated to this key. The types of key and mapped value may differ, 
-//and are grouped together in member type value_type, which is a pair type combining both:        
-
- 
-typedef pair<const Key, T> value_type;
+		//In a map, the key values are generally used to sort and uniquely identify the elements, 
+		//while the mapped values store the content associated to this key. The types of key and mapped value may differ, 
+		//and are grouped together in member type value_type, which is a pair type combining both:        
+		//typedef pair<const Key, T> value_type;
 
 	{
 		out << "\t" << mapEl.first << ";\n";
@@ -352,13 +350,13 @@ void testGraph()
 
 	g.toDotty(cout);
 	cout << endl;
-	string res = stringOfLabelsPub(2, 3, g);
+	string res = stringOfLabelsPub(2, 3, g);//cabx
 	cerr << "str = " << res << endl;
 	string res2;
-	res2 = getPathIter1(2, 3, g);
+	res2 = getPathIter1(2, 3, g);//bac
 	cerr << "str = " << res2 << endl;
 	string res4;
-	res4 = getPathIter2(2, 3, g);
+	res4 = getPathIter2(2, 3, g);//cab
 	cerr << "str = " << res4 << endl;
 	cout << "..........." << endl;
 	string res1 = stringOfLabelsPub(2, 4, g);
