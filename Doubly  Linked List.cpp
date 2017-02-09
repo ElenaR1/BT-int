@@ -165,3 +165,40 @@ int main()
 
 	return 0;
 }
+
+
+//circular
+template <typename T>
+void circularList<T>::addFront(const T& d)
+{
+	node<T>*n = new node<T>(d, NULL, NULL);
+		head = n;
+		head->next = NULL;
+		if (last == NULL)
+			last = n;
+		else
+			last->next = n;
+	assert(head != NULL);
+	size++;
+}
+template <typename T>
+void circularList<T>::addEnd(const T& d)
+{
+	node<T>*n = new node<T>(d, NULL, NULL);
+	if (head == NULL)
+	{
+		addFront(d);
+	}
+	curr = head;
+	else
+	{
+		while (curr->next != head)
+		{
+			curr = curr -> next;
+		}
+		curr->next = n;
+		last = n;
+		n->next = head;
+	}
+	size++;
+}
