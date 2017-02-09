@@ -405,6 +405,10 @@ private:
 			//ako e return new node<T>(STR->data,STR->left,STR->right) taka kopirame samo korena a drugite node-ove
 			//si ostavat ot staroto durvo
 		}
+		//root =copy(other.root) obqsnihme zashto. Po sushtata logika kato vrushtame new node lqvata chast na tozi node
+	//ne moje da bude tam na kudeto sochi subTreeRoot->left t.k tova si e veche sushtestvuvasht node, a trqbva da napravim
+	//nov za novoto durno koeto postroqvame.  Kato rezultat subTreeRoot->left=copyTree(str->left)=new node<T>(...)
+		// raven e na nov node sus sushtata data kato str->left->data
 	}
 	void listLeavesPrivate(node<T>* subTreeRoot, vector<T> &v)
 	{
