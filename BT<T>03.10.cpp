@@ -509,6 +509,7 @@ private:
 		return n;
 	}
 	void insertBotPrivate(node<T>* &subTreeRoot, const T& addData)
+		//v tozi sluchai kum staroto durvo dobavqme nov element i zatove podavame root-a po referencia
 		//ako ne e po referencia nishto nqma da se otpechata zashtoto pri root-a nqma nishto da se smeni i shte si sochi kum NULL
 	{
 		if (subTreeRoot == NULL)
@@ -527,6 +528,7 @@ private:
 			}
 		}
 	}
+	//v tozi sluchai suzdavame naoulno novo durvo, zatova subTreeRoot ne e po referencia. Ne vkarvame elementa v staroto durvo a pravim naoulno novo durvo
 	node<T>* insertedBotPrivate(node<T>* subTreeRoot, const T& addData)
 	{
 		if (subTreeRoot == NULL)
