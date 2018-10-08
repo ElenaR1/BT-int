@@ -646,6 +646,15 @@ int main()
 	printVector(t.level(2));
 	cout << t[4] << endl;
 
+	/* // ZA VISUAL STUDIO 2017
+	vector<int>b = t.level(2);
+	printVector(b);
+
+	//vector<int>a = t.listLeaves();
+	//printVector(a);
+	//printVector(t.level(2));
+	*/
+	
 	/*cout << t.isComplete() << endl;
 
 	t.seriazlize(cout);
