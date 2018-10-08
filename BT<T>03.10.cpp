@@ -575,8 +575,8 @@ private:
 			subTreeRoot->right == NULL)
 
 		{
-			delete subTreeRoot;
-			subTreeRoot = NULL;
+			delete subTreeRoot;//kato triq ptr triq tova kum koeto sochi, a ne samiq ptr. Ako ne sloja subTreeRoot = NULL;
+			subTreeRoot = NULL;//ptr-a shte produlji da si sochi kum neshto
 			return;
 		}
 
