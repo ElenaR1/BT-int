@@ -4,7 +4,7 @@
  
  
 using namespace std;
- //1zad
+ //1zad obqsnena v tetradka po sdp (moi si neshta pishe v neq)+list v 1vata tetradka po sdp
 int H(int n, int x)
 {
     if (n == 0)
@@ -79,6 +79,7 @@ int main()
 
 
 //2ra zad HORSES
+//obqsnena vuv 2rata tetradka po sdp(moi si neshta)
 #include <iostream>
 #include <iomanip>
 #include <vector>
