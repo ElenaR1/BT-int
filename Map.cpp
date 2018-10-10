@@ -1,4 +1,5 @@
 //!!!!!!!!!! http://comproguide.blogspot.bg/search?q=linked+list+c%2B%2B RESHENI ZADACHI za linked list
+#include "stdafx.h"
 #include <iostream>
 #include <string.h>
 #include <string>
@@ -16,9 +17,12 @@ bool func(int*a, int*b, int n1, int n2)
 	{
 		f[a[i]] = true;
 	}
+	map<int, bool>::iterator it = f.find(2);//Searches the container for an element with a key equivalent to k and 
+	//returns an iterator to it if found, otherwise it returns an iterator to map::end.
+	cout<<"elem with key value 2" << it->second<<endl;//vrushta 1 t.k prosto sme dali da e true
 	for (size_t i = 0; i < n2; i++)
 	{
-		if (f.find(b[i]) != f.end())
+		if (f.find(b[i]) != f.end())//ako element ot masiva b se sreshta v map-a vrushta false
 		{
 			return false;
 		}
@@ -32,7 +36,7 @@ int max(int a, int b)
 	else
 		return b;
 }
-int maxDistance(int*arr, int n)
+int maxDistance(int*arr, int n)//namira nai-golqmoto razstoqnie mejdu 2 povtarshti vse elementa v masiva
 {
 	map<int, int> mp;
 	int max_dist = 0;
@@ -40,7 +44,7 @@ int maxDistance(int*arr, int n)
 	{
 		// If this is first occurrence of element, insert its
 		// index in map
-		if (mp.find(arr[i]) == mp.end())
+		if (mp.find(arr[i]) == mp.end())//find ne namira elementa and it returns an iterator to map::end -> elementa se sreshta za pruv put
 			mp[arr[i]] = i;
 
 		// Else update max distance
@@ -97,7 +101,7 @@ int main()
 
 	int arr[] = { 3, 2, 1, 2, 1, 4, 5, 8, 6, 7, 4, 2 };
 	int n = 12;
-	cout << maxDistance(arr, n) << endl;
+	cout<<"max distance: " << maxDistance(arr, n) << endl;
 
 
 	mapp[1] = 'a';
