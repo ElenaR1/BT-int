@@ -182,6 +182,7 @@ private:
 			return;
 			
 		}
+		//str->data suvpada s x, no str-<left !=null && str->right!= null, t.e ima poddurvo pod str
 		else
 		{
 			T smallestInRightSubtree = minElement(subTreeRoot->right);
